@@ -1,115 +1,57 @@
 ﻿using System;
 using UnityEngine;
 
-[RequireComponent(typeof(BoxCollider2D))]
 public class PlayerController : MonoBehaviour {
 
-    private const float SkinWidth = .015f;
+    public int InputIndex = 0;
+    public float MaxSpeed = 1f;
+    public float JumpStrength = 2f;
+    public float Acceleration = 10f;
+    public int NumberOfJumps = 2;
+    public BoxCollider2D FootCollider;
 
-    // Controller API
-    public int HorizontalRayCount = 4;
-    public int VerticalRayCount = 4;
-    public LayerMask CollisionLayerMask;
+    private string AxisHorizontal { get { return InputIndex + "_Horizontal"; } }
+    private string AxisJump { get { return InputIndex + "_Jump"; } }
 
-    // Components
     private Animator _animator;
-    private Collider2D _collider;
-
-    // Controller fields
-    public CollisionInfos Collisions;
-    public RaycastOriginInfos RaycastOrigins;
-    private float _horizontalRaySpacing;
-    private float _verticalRaySpacing;
-
-    public struct RaycastOriginInfos {
-        public Vector2 topLeft, topRight;
-        public Vector2 bottomLeft, bottomRight;
-    }
-
-    public struct CollisionInfos {
-        public bool above, below;
-        public bool left, right;
-
-        public void Reset() { above = below = left = right = false; }
-    }
+    private Rigidbody2D _rigidBody;
 
     public void Awake() {
         _animator = GetComponent<Animator>();
-        _collider = GetComponent<Collider2D>();
+        _rigidBody = GetComponent<Rigidbody2D>();
     }
 
-    public void Start() {
-        CalculateRaySpacing();
-    }
+    public void FixedUpdate() {
+        var grounded = IsGrounded();
+        var moving = IsMoving();
+        _animator.SetBool("Grounded", grounded);
+        _animator.SetBool("Walking", grounded && moving);
 
-    private void UpdateRaycastOrigins() {
-        var bounds = _collider.bounds;
-        bounds.Expand(SkinWidth * -2);
+        // Move
+        if (Math.Abs(Input.GetAxis(AxisHorizontal)) > float.Epsilon) {
+            _rigidBody.AddForce(Vector2.right * Input.GetAxis(AxisHorizontal) * Acceleration, ForceMode2D.Force);
+        }
 
-        RaycastOrigins.topLeft.Set(bounds.min.x, bounds.max.y);
-        RaycastOrigins.topRight.Set(bounds.max.x, bounds.max.y);
-        RaycastOrigins.bottomLeft.Set(bounds.min.x, bounds.min.y);
-        RaycastOrigins.bottomRight.Set(bounds.max.x, bounds.min.y);
-    }
+        // Jump
+        if (grounded && Input.GetAxis(AxisJump) > float.Epsilon) {
+            _rigidBody.AddForce(Vector2.up * JumpStrength, ForceMode2D.Impulse);
+        }
 
-    private void CalculateRaySpacing() {
-        var bounds = _collider.bounds;
-        bounds.Expand(SkinWidth * -2);
-
-        HorizontalRayCount = Mathf.Clamp(HorizontalRayCount, 2, int.MaxValue);
-        VerticalRayCount = Mathf.Clamp(VerticalRayCount, 2, int.MaxValue);
-        _horizontalRaySpacing = bounds.size.y / (HorizontalRayCount - 1);
-        _verticalRaySpacing = bounds.size.x / (VerticalRayCount - 1);
-    }
-
-    private void HorizontalCollisions(ref Vector3 velocity)
-    {
-        var directionX = Math.Sign(velocity.x);
-        var rayLength = Mathf.Abs(velocity.x) + SkinWidth;
-        for (int i = 0; i < HorizontalRayCount; i++)
+        // Cap speed to max speed
+        if (_rigidBody.velocity.x > MaxSpeed) {
+            _rigidBody.velocity = new Vector2(MaxSpeed, _rigidBody.velocity.y);
+        }
+        if (_rigidBody.velocity.x < -MaxSpeed)
         {
-            var rayOrigin = ((directionX == -1) ? RaycastOrigins.bottomLeft : RaycastOrigins.bottomRight) + Vector2.up * (_horizontalRaySpacing * i);
-            var hit = Physics2D.Raycast(rayOrigin, Vector2.right * directionX, rayLength, CollisionLayerMask);
-
-            if (hit) {
-                velocity.x = (hit.distance - SkinWidth) * directionX;
-                rayLength = hit.distance;
-                Collisions.left = directionX == -1;
-                Collisions.right = directionX == 1;
-            }
-            Debug.DrawRay(rayOrigin, Vector2.right * directionX * rayLength, Color.red);
+            _rigidBody.velocity = new Vector2(-MaxSpeed, _rigidBody.velocity.y);
         }
     }
 
-    private void VerticalCollisions(ref Vector3 velocity)
-    {
-        var directionY = Math.Sign(velocity.y);
-        var rayLength = Mathf.Abs(velocity.y) + SkinWidth;
-        for (int i = 0; i < VerticalRayCount; i++)
-        {
-            var rayOrigin = ((directionY == -1) ? RaycastOrigins.bottomLeft : RaycastOrigins.topLeft) + Vector2.right * (_verticalRaySpacing * i + velocity.x);
-            var hit = Physics2D.Raycast(rayOrigin, Vector2.up * directionY, rayLength, CollisionLayerMask);
-
-            if (hit) {
-                velocity.y = (hit.distance - SkinWidth) * directionY;
-                rayLength = hit.distance;
-                Collisions.below = directionY == -1;
-                Collisions.above = directionY == 1;
-            }
-            Debug.DrawRay(rayOrigin, Vector2.up * directionY * rayLength, Color.red);
-        }
+    public bool IsMoving() {
+        return Math.Abs(_rigidBody.velocity.x) > float.Epsilon;
     }
 
-    public void Move(Vector3 velocity) {
-        UpdateRaycastOrigins();
-        Collisions.Reset();
-
-        if (Math.Abs(velocity.x) > float.Epsilon) {
-            HorizontalCollisions(ref velocity);
-        }
-        if (Math.Abs(velocity.y) > float.Epsilon) {
-            VerticalCollisions(ref velocity);
-        }
-        transform.Translate(velocity);
+    public bool IsGrounded() {
+        return Physics2D.OverlapArea(FootCollider.bounds.min, FootCollider.bounds.max);
     }
 }
