@@ -9,6 +9,7 @@ public class Player : MonoBehaviour {
     private string InputVertical { get { return InputIndex + "_Vertical"; } }
     private string InputJump { get { return InputIndex + "_Jump"; } }
 
+    // Player controller
     private PlayerController _controller;
 
     // Player API
@@ -16,15 +17,19 @@ public class Player : MonoBehaviour {
     public int InputIndex = 0;
 
     // Player movement constants
-    public float MoveSpeed = 6f;
-    public float JumpHeight = .2f;
-    public float JumpTimeApex = .4f;
+    public float MoveSpeed = 1.2f;
     public float AccelerationAirborne = 0.1f;
     public float AccelerationGrounded = 0.1f;
 
+    // Player jump constants
+    public int NumberOfAirJumps = 1;
+    public float JumpHeight = .2f;
+    public float JumpTimeApex = .4f;
+
     // Player movement internals
-    private float _gravity = -20;
-    private float _jumpVelocity = 8;
+    private int _jumps;
+    private float _gravity;
+    private float _jumpVelocity;
     private float _moveAcceleration;
     private Vector3 _velocity;
 
@@ -40,11 +45,17 @@ public class Player : MonoBehaviour {
         if (_controller.Collisions.above || _controller.Collisions.below) {
             _velocity.y = 0;
         }
-        if (_controller.Collisions.below && Input.GetAxis(InputJump) > 0) {
+        if (Input.GetButtonDown(InputJump) && _controller.Collisions.below) {
             _velocity.y = _jumpVelocity;
         }
-        var targetVelocityX = input.x * MoveSpeed;
-        _velocity.x = Mathf.SmoothDamp(_velocity.x, targetVelocityX, ref _moveAcceleration, _controller.Collisions.below ? AccelerationGrounded : AccelerationAirborne);
+        if (Input.GetButtonDown(InputJump) && !_controller.Collisions.below && _jumps < NumberOfAirJumps) {
+            _velocity.y = _jumpVelocity;
+            _jumps += 1;
+        }
+        if (_controller.Collisions.below) {
+            _jumps = 0;
+        }
+        _velocity.x = Mathf.SmoothDamp(_velocity.x, input.x * MoveSpeed, ref _moveAcceleration, _controller.Collisions.below ? AccelerationGrounded : AccelerationAirborne);
         _velocity.y += _gravity * Time.deltaTime;
         _controller.Move(_velocity * Time.deltaTime);
     }
