@@ -14,7 +14,7 @@ public class Player : MonoBehaviour {
     public float MoveSpeed = 6f;
     public float JumpHeight = .2f;
     public float JumpTimeApex = .4f;
-    public float AccelerationAirborne = 0.2f;
+    public float AccelerationAirborne = 0.1f;
     public float AccelerationGrounded = 0.1f;
 
     // Player movement internals
