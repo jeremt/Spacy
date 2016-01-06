@@ -4,6 +4,11 @@ using System.Collections;
 [RequireComponent(typeof (PlayerController))]
 public class Player : MonoBehaviour {
 
+    // Player inputs
+    private string InputHorizontal { get { return InputIndex + "_Horizontal"; } }
+    private string InputVertical { get { return InputIndex + "_Vertical"; } }
+    private string InputJump { get { return InputIndex + "_Jump"; } }
+
     private PlayerController _controller;
 
     // Player API
@@ -31,11 +36,11 @@ public class Player : MonoBehaviour {
     }
 
     public void Update() {
-        var input = new Vector2(Input.GetAxisRaw("0_Horizontal"), Input.GetAxisRaw("0_Vertical"));
+        var input = new Vector2(Input.GetAxisRaw(InputHorizontal), Input.GetAxisRaw(InputVertical));
         if (_controller.Collisions.above || _controller.Collisions.below) {
             _velocity.y = 0;
         }
-        if (_controller.Collisions.below && Input.GetAxis("0_Jump") > 0) {
+        if (_controller.Collisions.below && Input.GetAxis(InputJump) > 0) {
             _velocity.y = _jumpVelocity;
         }
         var targetVelocityX = input.x * MoveSpeed;
