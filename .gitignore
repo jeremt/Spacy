@@ -6,7 +6,7 @@
 /UnityGenerated/
 /Library/
 /Assets/AssetStoreTools*
-/ProjectSettings
+/ProjectSettings/*
 /Build
 
 # ===================================== #
@@ -37,3 +37,9 @@ Thumbs.db
 *.app
 *.apk
 ./Audigame
+
+# =============== #
+# Unity mustkeep  #
+# =============== #
+!/ProjectSettings/InputManager.asset
+!/ProjectSettings/TagManager.asset
