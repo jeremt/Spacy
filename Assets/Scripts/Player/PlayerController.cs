@@ -3,9 +3,6 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour {
 
-    private string AxisHorizontal { get { return InputIndex + "_Horizontal"; } }
-    private string AxisJump { get { return InputIndex + "_Jump"; } }
-
     public int Index = 0;
     public int InputIndex = 0;
     public float MaxSpeed = 1f;
@@ -13,6 +10,9 @@ public class PlayerController : MonoBehaviour {
     public float Acceleration = 10f;
     public int NumberOfJumps = 2;
     public BoxCollider2D FootCollider;
+
+    private string AxisHorizontal { get { return InputIndex + "_Horizontal"; } }
+    private string AxisJump { get { return InputIndex + "_Jump"; } }
 
     private Animator _animator;
     private Rigidbody2D _rigidBody;
@@ -34,7 +34,7 @@ public class PlayerController : MonoBehaviour {
         }
 
         // Jump
-        if (grounded && Input.GetAxis(AxisJump) > 0) {
+        if (grounded && Input.GetAxis(AxisJump) > float.Epsilon) {
             _rigidBody.AddForce(Vector2.up * JumpStrength, ForceMode2D.Impulse);
         }
 
