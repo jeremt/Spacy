@@ -3,18 +3,15 @@ using System.Collections;
 
 public class HomePage : MonoBehaviour {
 
-	// Use this for initialization
-	void Start () {
-	
-	}
-	
-	// Update is called once per frame
-	void Update () {
-        for (int i = 0; i < 5; ++i) {
-//            if (InputManager.Instance.GetButtonDown(InputManager.Submit, i)) {
-//                GameManager.Instance.MasterInputIndex = i;
-//                // Transition
-//            }
+    void Update() {
+        if (!GetComponent<PageTransition>().IsTransitioning()) {
+            for (int i = 0; i < 5; ++i) {
+                if (InputManager.Instance.GetKeyUp(InputAlias.Submit, i)) {
+                    InputManager.Instance.MasterIndex = i;
+                    GetComponent<PageTransition>().StartTransition();
+                }
+            }
         }
 	}
+
 }
