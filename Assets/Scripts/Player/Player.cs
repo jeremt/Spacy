@@ -9,22 +9,22 @@ public class Player : MonoBehaviour {
     private string InputVertical { get { return InputIndex + "_Vertical"; } }
     private string InputJump { get { return InputIndex + "_Jump"; } }
 
-    // Player controller
-    private PlayerController _controller;
-
     // Player API
     public int Index = 0;
     public int InputIndex = 0;
 
     // Player movement constants
-    public float MoveSpeed = 1.2f;
+    public float MoveSpeed = 1f;
     public float AccelerationAirborne = 0.1f;
     public float AccelerationGrounded = 0.1f;
 
     // Player jump constants
     public int NumberOfAirJumps = 1;
-    public float JumpHeight = .2f;
-    public float JumpTimeApex = .4f;
+    public float JumpHeight = .35f;
+    public float JumpTimeApex = .32f;
+
+    // Components
+    private PlayerController _controller;
 
     // Player movement internals
     private int _jumps;

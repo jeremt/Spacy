@@ -1,46 +1,42 @@
 ﻿using System;
 using UnityEngine;
 
-[RequireComponent(typeof(BoxCollider2D))]
-public class PlayerController : MonoBehaviour {
+public struct RaycastOriginInfos
+{
+    public Vector2 topLeft, topRight;
+    public Vector2 bottomLeft, bottomRight;
+}
+public struct CollisionInfos
+{
+    public bool above, below;
+    public bool left, right;
 
+    public void Reset() { above = below = left = right = false; }
+}
+
+[RequireComponent(typeof (BoxCollider2D))]
+public class PlayerController : MonoBehaviour {
     private const float SkinWidth = .015f;
 
     // Controller API
+    public LayerMask CollisionLayerMask;
     public int HorizontalRayCount = 4;
     public int VerticalRayCount = 4;
-    public LayerMask CollisionLayerMask;
 
-    // Components
-    private Animator _animator;
-    private Collider2D _collider;
-
-    // Controller fields
+    // PlayerController collision and position informations
     public CollisionInfos Collisions;
     public RaycastOriginInfos RaycastOrigins;
+
+    // Components
+    private Collider2D _collider;
+
+    // Raycasting
     private float _horizontalRaySpacing;
     private float _verticalRaySpacing;
 
-    public struct RaycastOriginInfos {
-        public Vector2 topLeft, topRight;
-        public Vector2 bottomLeft, bottomRight;
-    }
+    public void Awake() { _collider = GetComponent<Collider2D>(); }
 
-    public struct CollisionInfos {
-        public bool above, below;
-        public bool left, right;
-
-        public void Reset() { above = below = left = right = false; }
-    }
-
-    public void Awake() {
-        _animator = GetComponent<Animator>();
-        _collider = GetComponent<Collider2D>();
-    }
-
-    public void Start() {
-        CalculateRaySpacing();
-    }
+    public void Start() { CalculateRaySpacing(); }
 
     private void UpdateRaycastOrigins() {
         var bounds = _collider.bounds;
@@ -62,12 +58,10 @@ public class PlayerController : MonoBehaviour {
         _verticalRaySpacing = bounds.size.x / (VerticalRayCount - 1);
     }
 
-    private void HorizontalCollisions(ref Vector3 velocity)
-    {
+    private void HorizontalCollisions(ref Vector3 velocity) {
         var directionX = Math.Sign(velocity.x);
         var rayLength = Mathf.Abs(velocity.x) + SkinWidth;
-        for (int i = 0; i < HorizontalRayCount; i++)
-        {
+        for (var i = 0; i < HorizontalRayCount; i++) {
             var rayOrigin = ((directionX == -1) ? RaycastOrigins.bottomLeft : RaycastOrigins.bottomRight) + Vector2.up * (_horizontalRaySpacing * i);
             var hit = Physics2D.Raycast(rayOrigin, Vector2.right * directionX, rayLength, CollisionLayerMask);
 
@@ -77,16 +71,14 @@ public class PlayerController : MonoBehaviour {
                 Collisions.left = directionX == -1;
                 Collisions.right = directionX == 1;
             }
-            Debug.DrawRay(rayOrigin, Vector2.right * directionX * rayLength, Color.red);
+            // Debug.DrawRay(rayOrigin, Vector2.right * directionX * rayLength, Color.red);
         }
     }
 
-    private void VerticalCollisions(ref Vector3 velocity)
-    {
+    private void VerticalCollisions(ref Vector3 velocity) {
         var directionY = Math.Sign(velocity.y);
         var rayLength = Mathf.Abs(velocity.y) + SkinWidth;
-        for (int i = 0; i < VerticalRayCount; i++)
-        {
+        for (var i = 0; i < VerticalRayCount; i++) {
             var rayOrigin = ((directionY == -1) ? RaycastOrigins.bottomLeft : RaycastOrigins.topLeft) + Vector2.right * (_verticalRaySpacing * i + velocity.x);
             var hit = Physics2D.Raycast(rayOrigin, Vector2.up * directionY, rayLength, CollisionLayerMask);
 
@@ -96,7 +88,7 @@ public class PlayerController : MonoBehaviour {
                 Collisions.below = directionY == -1;
                 Collisions.above = directionY == 1;
             }
-            Debug.DrawRay(rayOrigin, Vector2.up * directionY * rayLength, Color.red);
+            // Debug.DrawRay(rayOrigin, Vector2.up * directionY * rayLength, Color.red);
         }
     }
 
