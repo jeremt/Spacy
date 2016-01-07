@@ -117,7 +117,7 @@ MonoBehaviour:
   DeviceImage: {fileID: 11489138}
   _colors:
   - {r: 0.8308824, g: 0.4141704, b: 0.29936203, a: 1}
-  - {r: 0.72479135, g: 0.40208694, b: 0.8161765, a: 1}
+  - {r: 0.6173613, g: 0.47577852, b: 0.7352941, a: 1}
   - {r: 0.33039576, g: 0.6181854, b: 0.71323526, a: 1}
   - {r: 0.34131706, g: 0.78676474, b: 0.5287123, a: 1}
   - {r: 0.86764705, g: 0.74497974, b: 0.34450695, a: 1}
@@ -455,15 +455,15 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: _colors.Array.data[1].r
-      value: 0.72479135
+      value: 0.6173613
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: _colors.Array.data[1].g
-      value: 0.40208694
+      value: 0.47577852
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: _colors.Array.data[1].b
-      value: 0.8161765
+      value: 0.7352941
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: _colors.Array.data[2].g

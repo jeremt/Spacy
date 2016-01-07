@@ -16,14 +16,24 @@ public class PlayerData {
 public class GameManager : Singleton<GameManager> {
 
     private PlayerData[] _players = new PlayerData[5];
+    private List<Color> _colors = new List<Color> {
+        new Color(0.8f, 0.2f, 0.2f, 1f),
+        new Color(0.2f, 0.8f, 0.2f, 1f),
+        new Color(0.2f, 0.2f, 0.8f, 1f),
+        new Color(0.8f, 0.8f, 0.2f, 1f),
+        new Color(0.8f, 0.2f, 0.8f, 1f)
+    };
 
     protected GameManager() {}
 
-    public void SetPlayer(int index, PlayerData player) {
-        _players[index] = player;
+    public void SetPlayer(int index, int inputIndex) {
+        var color = _colors[Random.Range(0, 5)];
+        _colors.Remove(color);
+        _players[index] = new PlayerData(inputIndex, color);
     }
 
     public void RemovePlayer(int index) {
+        _colors.Add(_players[index].SkinColor);
         _players[index] = null;
     }
 
@@ -40,7 +50,7 @@ public class GameManager : Singleton<GameManager> {
         return -1;
     }
 
-    public bool InputAvailable(int inputIndex) {
+    public bool IsInputAvailable(int inputIndex) {
         for (int i = 0; i < 5; ++i) {
             if (_players[i] != null && _players[i].InputIndex == inputIndex) {
                 return false;

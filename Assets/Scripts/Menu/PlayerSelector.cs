@@ -8,9 +8,6 @@ public class PlayerSelector : MonoBehaviour {
     public Image PlayerImage;
     public Text Text;
     public Image DeviceImage;
-
-    public Color[] _colors = new Color[] {};
-
     public Sprite[] DevicesSprite;
     	
     void Start() {
@@ -26,8 +23,8 @@ public class PlayerSelector : MonoBehaviour {
             }
         } else {
             if (GameManager.Instance.GetNextPlayerIndex() == Index) {
-                for (int inputIndex = 0; inputIndex < 5; ++inputIndex) {
-                    if (InputManager.Instance.GetKeyUp(InputAlias.Submit, inputIndex) && GameManager.Instance.InputAvailable(inputIndex)) {
+                for (int inputIndex = 0; inputIndex < InputManager.NumberOfInputs; ++inputIndex) {
+                    if (InputManager.Instance.GetKeyUp(InputAlias.Submit, inputIndex) && GameManager.Instance.IsInputAvailable(inputIndex)) {
                         _selectPlayer(inputIndex);
                     }
                 }
@@ -36,13 +33,15 @@ public class PlayerSelector : MonoBehaviour {
 	}
 
     private void _selectPlayer(int inputIndex) {
-        GameManager.Instance.SetPlayer(Index, new PlayerData(inputIndex, _colors[Random.Range(0, 5)]));
+        GameManager.Instance.SetPlayer(Index, inputIndex);
         PlayerImage.color = GameManager.Instance.GetPlayer(Index).SkinColor;
         Text.color = GameManager.Instance.GetPlayer(Index).SkinColor;
         DeviceImage.overrideSprite = DevicesSprite[inputIndex];
+        Debug.Log("Player " + Index + " selected, inputIndex = " + inputIndex + " (available = " + GameManager.Instance.IsInputAvailable(inputIndex) + ")");
     }
 
     private void _deselectPlayer() {
+        Debug.Log("Deselect player " + Index);
         PlayerImage.color = new Color(1f, 1f, 1f, 125f/255f);
         Text.color = new Color(1f, 1f, 1f, 125f/255f);
         DeviceImage.overrideSprite = DevicesSprite[5];
