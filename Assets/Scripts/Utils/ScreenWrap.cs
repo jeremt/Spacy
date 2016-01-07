@@ -2,22 +2,28 @@
 
 public class ScreenWrap : MonoBehaviour {
 
+    [Tooltip("The margin before wrapping in X")]
+    public float MarginX;
+
+    [Tooltip("The margin before wrapping in Y")]
+    public float MarginY;
+
     public void Update() {
-        var xDelta = transform.position.x;
-        var yDelta = transform.position.y;
-        var aspectRatio = Screen.width / (float) Screen.height;
-        if (transform.position.x < -1f * aspectRatio) {
-            xDelta = 1f * aspectRatio;
+        var viewportPosition = Camera.main.WorldToViewportPoint(transform.position);
+        var newPosition = transform.position;
+
+        if (viewportPosition.x > 1 + MarginX) {
+            newPosition.x = -newPosition.x + MarginX;
         }
-        else if (transform.position.x > 1f * aspectRatio) {
-            xDelta = -1f * aspectRatio;
+        if (viewportPosition.x < -MarginX) {
+            newPosition.x = -newPosition.x - MarginX;
         }
-        if (transform.position.y < -1f) {
-            yDelta = 1f;
+        if (viewportPosition.y > 1 + MarginY) {
+            newPosition.y = -newPosition.y + MarginY;
         }
-        else if (transform.position.y > 1f) {
-            yDelta = -1f;
+        if (viewportPosition.y < -MarginY) {
+            newPosition.y = -newPosition.y - MarginY;
         }
-        transform.position = new Vector3(xDelta, yDelta, 0);
+        transform.position = newPosition;
     }
 }

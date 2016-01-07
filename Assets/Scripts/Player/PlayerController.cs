@@ -3,15 +3,15 @@ using UnityEngine;
 
 public struct RaycastOriginInfos
 {
-    public Vector2 topLeft, topRight;
-    public Vector2 bottomLeft, bottomRight;
+    public Vector2 TopLeft, TopRight;
+    public Vector2 BottomLeft, BottomRight;
 }
 public struct CollisionInfos
 {
-    public bool above, below;
-    public bool left, right;
+    public bool Above, Below;
+    public bool Left, Right;
 
-    public void Reset() { above = below = left = right = false; }
+    public void Reset() { Above = Below = Left = Right = false; }
 }
 
 [RequireComponent(typeof (BoxCollider2D))]
@@ -19,7 +19,8 @@ public class PlayerController : MonoBehaviour {
     private const float SkinWidth = .015f;
 
     // Controller API
-    public LayerMask CollisionLayerMask;
+    public LayerMask ObstacleLayerMask;
+    public LayerMask PlatformLayerMask;
     public int HorizontalRayCount = 4;
     public int VerticalRayCount = 4;
 
@@ -42,10 +43,10 @@ public class PlayerController : MonoBehaviour {
         var bounds = _collider.bounds;
         bounds.Expand(SkinWidth * -2);
 
-        RaycastOrigins.topLeft.Set(bounds.min.x, bounds.max.y);
-        RaycastOrigins.topRight.Set(bounds.max.x, bounds.max.y);
-        RaycastOrigins.bottomLeft.Set(bounds.min.x, bounds.min.y);
-        RaycastOrigins.bottomRight.Set(bounds.max.x, bounds.min.y);
+        RaycastOrigins.TopLeft.Set(bounds.min.x, bounds.max.y);
+        RaycastOrigins.TopRight.Set(bounds.max.x, bounds.max.y);
+        RaycastOrigins.BottomLeft.Set(bounds.min.x, bounds.min.y);
+        RaycastOrigins.BottomRight.Set(bounds.max.x, bounds.min.y);
     }
 
     private void CalculateRaySpacing() {
@@ -62,16 +63,16 @@ public class PlayerController : MonoBehaviour {
         var directionX = Math.Sign(velocity.x);
         var rayLength = Mathf.Abs(velocity.x) + SkinWidth;
         for (var i = 0; i < HorizontalRayCount; i++) {
-            var rayOrigin = ((directionX == -1) ? RaycastOrigins.bottomLeft : RaycastOrigins.bottomRight) + Vector2.up * (_horizontalRaySpacing * i);
-            var hit = Physics2D.Raycast(rayOrigin, Vector2.right * directionX, rayLength, CollisionLayerMask);
+            var rayOrigin = ((directionX == -1) ? RaycastOrigins.BottomLeft : RaycastOrigins.BottomRight) + Vector2.up * (_horizontalRaySpacing * i);
+            var hit = Physics2D.Raycast(rayOrigin, Vector2.right * directionX, rayLength, ObstacleLayerMask);
 
             if (hit) {
                 velocity.x = (hit.distance - SkinWidth) * directionX;
                 rayLength = hit.distance;
-                Collisions.left = directionX == -1;
-                Collisions.right = directionX == 1;
+                Collisions.Left = directionX == -1;
+                Collisions.Right = directionX == 1;
             }
-            // Debug.DrawRay(rayOrigin, Vector2.right * directionX * rayLength, Color.red);
+            // Debug.DrawRay(rayOrigin, Vector2.Right * directionX * rayLength, Color.red);
         }
     }
 
@@ -79,14 +80,14 @@ public class PlayerController : MonoBehaviour {
         var directionY = Math.Sign(velocity.y);
         var rayLength = Mathf.Abs(velocity.y) + SkinWidth;
         for (var i = 0; i < VerticalRayCount; i++) {
-            var rayOrigin = ((directionY == -1) ? RaycastOrigins.bottomLeft : RaycastOrigins.topLeft) + Vector2.right * (_verticalRaySpacing * i + velocity.x);
-            var hit = Physics2D.Raycast(rayOrigin, Vector2.up * directionY, rayLength, CollisionLayerMask);
+            var rayOrigin = ((directionY == -1) ? RaycastOrigins.BottomLeft : RaycastOrigins.TopLeft) + Vector2.right * (_verticalRaySpacing * i + velocity.x);
+            var hit = Physics2D.Raycast(rayOrigin, Vector2.up * directionY, rayLength, ObstacleLayerMask);
 
             if (hit) {
                 velocity.y = (hit.distance - SkinWidth) * directionY;
                 rayLength = hit.distance;
-                Collisions.below = directionY == -1;
-                Collisions.above = directionY == 1;
+                Collisions.Below = directionY == -1;
+                Collisions.Above = directionY == 1;
             }
             // Debug.DrawRay(rayOrigin, Vector2.up * directionY * rayLength, Color.red);
         }

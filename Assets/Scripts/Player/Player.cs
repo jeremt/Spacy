@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 [RequireComponent(typeof (PlayerController))]
 public class Player : MonoBehaviour {
@@ -42,20 +41,20 @@ public class Player : MonoBehaviour {
 
     public void Update() {
         var input = new Vector2(Input.GetAxisRaw(InputHorizontal), Input.GetAxisRaw(InputVertical));
-        if (_controller.Collisions.above || _controller.Collisions.below) {
+        if (_controller.Collisions.Above || _controller.Collisions.Below) {
             _velocity.y = 0;
         }
-        if (Input.GetButtonDown(InputJump) && _controller.Collisions.below) {
+        if (Input.GetButtonDown(InputJump) && _controller.Collisions.Below) {
             _velocity.y = _jumpVelocity;
         }
-        if (Input.GetButtonDown(InputJump) && !_controller.Collisions.below && _jumps < NumberOfAirJumps) {
+        if (Input.GetButtonDown(InputJump) && !_controller.Collisions.Below && _jumps < NumberOfAirJumps) {
             _velocity.y = _jumpVelocity;
             _jumps += 1;
         }
-        if (_controller.Collisions.below) {
+        if (_controller.Collisions.Below) {
             _jumps = 0;
         }
-        _velocity.x = Mathf.SmoothDamp(_velocity.x, input.x * MoveSpeed, ref _moveAcceleration, _controller.Collisions.below ? AccelerationGrounded : AccelerationAirborne);
+        _velocity.x = Mathf.SmoothDamp(_velocity.x, input.x * MoveSpeed, ref _moveAcceleration, _controller.Collisions.Below ? AccelerationGrounded : AccelerationAirborne);
         _velocity.y += _gravity * Time.deltaTime;
         _controller.Move(_velocity * Time.deltaTime);
     }
