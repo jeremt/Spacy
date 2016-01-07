@@ -115,12 +115,6 @@ MonoBehaviour:
   PlayerImage: {fileID: 11414078}
   Text: {fileID: 11438820}
   DeviceImage: {fileID: 11489138}
-  _colors:
-  - {r: 0.8308824, g: 0.4141704, b: 0.29936203, a: 1}
-  - {r: 0.6173613, g: 0.47577852, b: 0.7352941, a: 1}
-  - {r: 0.33039576, g: 0.6181854, b: 0.71323526, a: 1}
-  - {r: 0.34131706, g: 0.78676474, b: 0.5287123, a: 1}
-  - {r: 0.86764705, g: 0.74497974, b: 0.34450695, a: 1}
   DevicesSprite:
   - {fileID: 21300008, guid: caceb787365be4006a6eff3746c4dc15, type: 3}
   - {fileID: 21300002, guid: caceb787365be4006a6eff3746c4dc15, type: 3}

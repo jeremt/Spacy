@@ -14,7 +14,6 @@ public class PlayerSelector : MonoBehaviour {
         Text.text = "P" + (Index + 1);
     }
 
-	// Update is called once per frame
 	void Update() {
         PlayerData player = GameManager.Instance.GetPlayer(Index);
         if (player != null) {
