@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using XboxCtrlrInput;
 
 public enum InputAlias {
 //    Horizontal,
@@ -21,43 +22,16 @@ public class InputManager : Singleton<InputManager> {
 
     public const int NumberOfInputs = 5;
 
-    Dictionary<InputAlias, KeyCode>[] _aliases = new Dictionary<InputAlias, KeyCode>[NumberOfInputs] {
-    
-        // P1
-        new Dictionary<InputAlias, KeyCode>() {
-            { InputAlias.Start, KeyCode.Return },
-            { InputAlias.Submit, KeyCode.Return },
-            { InputAlias.Cancel, KeyCode.Escape }
-        },
+    private Dictionary<InputAlias, KeyCode> _keyboardAliases = new Dictionary<InputAlias, KeyCode>() {
+        { InputAlias.Start, KeyCode.Return },
+        { InputAlias.Submit, KeyCode.Return },
+        { InputAlias.Cancel, KeyCode.Escape }
+    };
 
-        // P2
-        new Dictionary<InputAlias, KeyCode>() {
-            { InputAlias.Start, KeyCode.Joystick1Button8 },
-            { InputAlias.Submit, KeyCode.Joystick1Button0 },
-            { InputAlias.Cancel, KeyCode.Joystick1Button2 }
-        },
-
-        // P3
-        new Dictionary<InputAlias, KeyCode>() {
-            { InputAlias.Start, KeyCode.Joystick2Button8 },
-            { InputAlias.Submit, KeyCode.Joystick2Button0 },
-            { InputAlias.Cancel, KeyCode.Joystick2Button2 }
-        },
-
-        // P4
-        new Dictionary<InputAlias, KeyCode>() {
-            { InputAlias.Start, KeyCode.Joystick3Button8 },
-            { InputAlias.Submit, KeyCode.Joystick3Button0 },
-            { InputAlias.Cancel, KeyCode.Joystick3Button2 }
-        },
-
-        // P5
-        new Dictionary<InputAlias, KeyCode>() {
-            { InputAlias.Start, KeyCode.Joystick4Button8 },
-            { InputAlias.Submit, KeyCode.Joystick4Button0 },
-            { InputAlias.Cancel, KeyCode.Joystick4Button2 }
-        },
-
+    private Dictionary<InputAlias, XboxButton> _xboxAliases = new Dictionary<InputAlias, XboxButton>() {
+        { InputAlias.Start, XboxButton.Start },
+        { InputAlias.Submit, XboxButton.A },
+        { InputAlias.Cancel, XboxButton.B }
     };
 
     protected InputManager() {}
@@ -72,7 +46,11 @@ public class InputManager : Singleton<InputManager> {
     }
 
     public bool GetKeyUp(InputAlias alias, int inputIndex) {
-        return Input.GetKeyUp(_aliases[inputIndex][alias]);
+        if (inputIndex == 0) {
+            return Input.GetKeyUp(_keyboardAliases[alias]);
+        } else {
+            return XCI.GetButtonUp(_xboxAliases[alias], inputIndex);
+        }
     }
 
     public bool GetKeyDown(InputAlias alias) {
@@ -85,7 +63,11 @@ public class InputManager : Singleton<InputManager> {
     }
 
     public bool GetKeyDown(InputAlias alias, int inputIndex) {
-        return Input.GetKeyDown(_aliases[inputIndex][alias]);
+        if (inputIndex == 0) {
+            return Input.GetKeyDown(_keyboardAliases[alias]);
+        } else {
+            return XCI.GetButtonDown(_xboxAliases[alias], inputIndex);
+        }
     }
 
 }
