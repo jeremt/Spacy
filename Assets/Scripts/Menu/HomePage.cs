@@ -10,6 +10,11 @@ public class HomePage : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-	//
+        for (int i = 0; i < 5; ++i) {
+//            if (InputManager.Instance.GetButtonDown(InputManager.Submit, i)) {
+//                GameManager.Instance.MasterInputIndex = i;
+//                // Transition
+//            }
+        }
 	}
 }
