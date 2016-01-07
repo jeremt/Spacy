@@ -25,13 +25,23 @@ public class InputManager : Singleton<InputManager> {
     private Dictionary<InputAlias, KeyCode> _keyboardAliases = new Dictionary<InputAlias, KeyCode>() {
         { InputAlias.Start, KeyCode.Return },
         { InputAlias.Submit, KeyCode.Return },
-        { InputAlias.Cancel, KeyCode.Escape }
+        { InputAlias.Cancel, KeyCode.Escape },
+        { InputAlias.Alt, KeyCode.C },
+        { InputAlias.Jump, KeyCode.Space },
+        { InputAlias.Shoot, KeyCode.LeftShift },
+        { InputAlias.Shield, KeyCode.X },
+        { InputAlias.Crouch, KeyCode.V }
     };
 
     private Dictionary<InputAlias, XboxButton> _xboxAliases = new Dictionary<InputAlias, XboxButton>() {
         { InputAlias.Start, XboxButton.Start },
         { InputAlias.Submit, XboxButton.A },
-        { InputAlias.Cancel, XboxButton.B }
+        { InputAlias.Cancel, XboxButton.B },
+        { InputAlias.Alt, XboxButton.Y },
+        { InputAlias.Jump, XboxButton.A },
+        { InputAlias.Shoot, XboxButton.RightBumper }, // TODO: use RightTrigger but it's an axis :(
+        { InputAlias.Shield, XboxButton.X },
+        { InputAlias.Crouch, XboxButton.B }
     };
 
     protected InputManager() {}
