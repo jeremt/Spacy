@@ -41,6 +41,7 @@ public class PlayerGun : MonoBehaviour {
         var bulletInstance = Instantiate(Bullet, transform.position, Quaternion.Euler(new Vector3(0,0,0))) as Rigidbody2D;
         if (bulletInstance != null) {
             bulletInstance.velocity = new Vector2(BulletSpeed, 0);
+            bulletInstance.GetComponent<PlayerBullet>().PlayerIndex = GetComponent<Player>().Index;
         }
     }
 }
