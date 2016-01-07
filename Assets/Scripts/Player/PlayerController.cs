@@ -10,8 +10,15 @@ public struct CollisionInfos
 {
     public bool Above, Below;
     public bool Left, Right;
+    public bool BelowPlatform;
 
-    public void Reset() { Above = Below = Left = Right = false; }
+    public void Reset() { Above = Below = Left = Right = BelowPlatform = false; }
+
+    public override string ToString() {
+        return String.Format(
+            "Above: {0}, Below: {1}, Left: {2}, Right: {3}, BelowPlatform: {4}",
+            Above, Below, Left,Right, BelowPlatform);
+    }
 }
 
 [RequireComponent(typeof (BoxCollider2D))]
@@ -72,7 +79,7 @@ public class PlayerController : MonoBehaviour {
                 Collisions.Left = directionX == -1;
                 Collisions.Right = directionX == 1;
             }
-            // Debug.DrawRay(rayOrigin, Vector2.Right * directionX * rayLength, Color.red);
+            // Debug.DrawRay(rayOrigin, Vector2.right * directionX * rayLength, Color.green);
         }
     }
 
@@ -81,13 +88,24 @@ public class PlayerController : MonoBehaviour {
         var rayLength = Mathf.Abs(velocity.y) + SkinWidth;
         for (var i = 0; i < VerticalRayCount; i++) {
             var rayOrigin = ((directionY == -1) ? RaycastOrigins.BottomLeft : RaycastOrigins.TopLeft) + Vector2.right * (_verticalRaySpacing * i + velocity.x);
-            var hit = Physics2D.Raycast(rayOrigin, Vector2.up * directionY, rayLength, ObstacleLayerMask);
+            var hitObstacle = Physics2D.Raycast(rayOrigin, Vector2.up * directionY, rayLength, ObstacleLayerMask);
 
-            if (hit) {
-                velocity.y = (hit.distance - SkinWidth) * directionY;
-                rayLength = hit.distance;
+            if (hitObstacle) {
+                velocity.y = (hitObstacle.distance - SkinWidth) * directionY;
+                rayLength = hitObstacle.distance;
                 Collisions.Below = directionY == -1;
                 Collisions.Above = directionY == 1;
+            }
+
+            if (directionY == -1) {
+                var hitPlatform = Physics2D.Raycast(rayOrigin, Vector2.up * directionY, rayLength, PlatformLayerMask);
+
+                if (hitPlatform && RaycastOrigins.BottomLeft.y >= hitPlatform.collider.bounds.max.y) {
+                    velocity.y = (hitPlatform.distance - SkinWidth) * directionY;
+                    rayLength = hitObstacle.distance;
+                    Collisions.BelowPlatform = Collisions.Below = directionY == -1;
+                    Collisions.Above = directionY == 1;
+                }
             }
             // Debug.DrawRay(rayOrigin, Vector2.up * directionY * rayLength, Color.red);
         }
