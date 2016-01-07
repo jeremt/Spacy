@@ -12,6 +12,10 @@ public class PageTransition : MonoBehaviour {
     private float _targetStart;
 
     public void StartTransition() {
+        PageTransition targetTransition = TargetPage.gameObject.GetComponent<PageTransition>();
+        if (targetTransition != null && targetTransition.IsTransitioning() || IsTransitioning()) {
+            return;
+        }
         TargetPage.transform.Translate(0, _getOffset(), 0);
         TargetPage.SetActive(true);
         _targetStart = TargetPage.transform.position.y;
