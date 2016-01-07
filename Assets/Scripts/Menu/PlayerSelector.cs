@@ -15,9 +15,6 @@ public class PlayerSelector : MonoBehaviour {
     	
     void Start() {
         Text.text = "P" + (Index + 1);
-        if (Index == 0) {
-            _selectPlayer(InputManager.Instance.MasterIndex);
-        }
     }
 
 	// Update is called once per frame
@@ -29,7 +26,7 @@ public class PlayerSelector : MonoBehaviour {
             }
         } else {
             if (GameManager.Instance.GetNextPlayerIndex() == Index) {
-                for (int inputIndex = 0; inputIndex < 2; ++inputIndex) {
+                for (int inputIndex = 0; inputIndex < 5; ++inputIndex) {
                     if (InputManager.Instance.GetKeyUp(InputAlias.Submit, inputIndex) && GameManager.Instance.InputAvailable(inputIndex)) {
                         _selectPlayer(inputIndex);
                     }

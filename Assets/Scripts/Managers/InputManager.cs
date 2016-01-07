@@ -19,7 +19,7 @@ public enum InputAlias {
 
 public class InputManager : Singleton<InputManager> {
 
-    public static const int NumberOfInputs = 5;
+    public const int NumberOfInputs = 5;
 
     Dictionary<InputAlias, KeyCode>[] _aliases = new Dictionary<InputAlias, KeyCode>[NumberOfInputs] {
     
