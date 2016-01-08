@@ -12,9 +12,6 @@ public class ModeSelector : MonoBehaviour {
     // Components
     private Image _image;
 
-    // Internals
-    private bool _isSelected;
-
     void Awake() {
         _image = GetComponent<Image>();
     }
@@ -24,13 +21,11 @@ public class ModeSelector : MonoBehaviour {
     }
 
     public void Select() {
-        _isSelected = true;
         transform.localScale = new Vector3(1, 1, 1);
         _image.color = new Color(0, 0, 0, 70f/255f);
     }
 
     public void Deselect() {
-        _isSelected = false;
         transform.localScale = new Vector3(0.7f, 0.7f, 0.7f);
         _image.color = new Color(0f, 0f, 0f, 0f);
     }

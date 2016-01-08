@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 using System.Collections;
 
 [RequireComponent(typeof (PageTransition))]
@@ -12,7 +13,7 @@ public class LevelsPage : MonoBehaviour {
             GetComponent<PageTransition>().GoPrevious();
         }
         if (InputManager.Instance.GetKeyUp(InputAlias.Submit)) {
-            Application.LoadLevel("Runaway");
+            SceneManager.LoadScene("Runaway");
         }
     }
 
