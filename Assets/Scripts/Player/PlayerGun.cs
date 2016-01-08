@@ -44,6 +44,11 @@ public class PlayerGun : MonoBehaviour {
         var bulletInstance = Instantiate(Bullet, transform.position, Quaternion.Euler(new Vector3(0,0,0))) as Rigidbody2D;
         if (bulletInstance != null) {
             bulletInstance.velocity = new Vector2(_player.FacingRight ? BulletSpeed : -BulletSpeed, 0);
+            if (!_player.FacingRight) {
+                var scale = bulletInstance.transform.localScale;
+                scale.x *= -1;
+                bulletInstance.transform.localScale = scale;
+            }
             bulletInstance.GetComponent<SpriteRenderer>().color = GameManager.Instance.GetPlayer(_player.Index).SkinColor;
             bulletInstance.GetComponent<PlayerBullet>().PlayerIndex = _player.Index;
         }

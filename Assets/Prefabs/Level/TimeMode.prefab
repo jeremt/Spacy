@@ -48,6 +48,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a7ca640432296488a852d2e0f6b633ed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  CurrentLevel: {fileID: 0}
   TimerText: {fileID: 11487404}
   Duration: 120
 --- !u!114 &11427896
@@ -122,7 +123,7 @@ MonoBehaviour:
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
     m_Font: {fileID: 12800000, guid: ed7fe8b4bf2374db7bf1db20243cbd45, type: 3}
-    m_FontSize: 20
+    m_FontSize: 40
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 2
@@ -204,6 +205,10 @@ Prefab:
       propertyPath: TimerText
       value: 
       objectReference: {fileID: 11487404}
+    - target: {fileID: 0}
+      propertyPath: m_FontData.m_FontSize
+      value: 40
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 180086}
