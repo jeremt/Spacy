@@ -71,11 +71,12 @@ public class GameManager : Singleton<GameManager> {
 
     private PlayerData[] _players = new PlayerData[5];
     private List<Color> _colors = new List<Color> {
-        new Color(0.8f, 0.2f, 0.2f, 1f),
-        new Color(0.2f, 0.8f, 0.2f, 1f),
-        new Color(0.2f, 0.8f, 0.8f, 1f),
-        new Color(0.8f, 0.8f, 0.2f, 1f),
-        new Color(0.8f, 0.2f, 0.8f, 1f)
+        new Color(0.6f, 0.4f, 0.4f, 1f),
+        new Color(0.4f, 0.6f, 0.4f, 1f),
+        new Color(0.4f, 0.4f, 0.6f, 1f),
+        new Color(0.4f, 0.6f, 0.6f, 1f),
+        new Color(0.6f, 0.6f, 0.4f, 1f),
+        new Color(0.6f, 0.4f, 0.6f, 1f),
     };
     private ModeData _mode;
 
