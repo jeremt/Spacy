@@ -35,7 +35,10 @@ public class Player : MonoBehaviour {
     }
 
     public void Update() {
-        var input = new Vector2(InputManager.Instance.GetAxis(InputAlias.Horizontal), InputManager.Instance.GetAxis(InputAlias.Vertical));
+        var input = new Vector2(
+            InputManager.Instance.GetAxis(InputAlias.Horizontal, InputIndex),
+            InputManager.Instance.GetAxis(InputAlias.Vertical, InputIndex)
+        );
         if (_controller.Collisions.Above || _controller.Collisions.Below) {
             _velocity.y = 0;
         }

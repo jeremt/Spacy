@@ -34,8 +34,8 @@ public class InputManager : Singleton<InputManager> {
     };
 
     private Dictionary<InputAlias, string> _keyboardAxis = new Dictionary<InputAlias, string>() {
-        { InputAlias.Horizontal, "0_Horizontal" },
-        { InputAlias.Vertical, "0_Vertical" }
+        { InputAlias.Horizontal, "KeyboardHorizontal" },
+        { InputAlias.Vertical, "KeyboardVertical" }
     };
 
     private Dictionary<InputAlias, XboxButton> _xboxButtons = new Dictionary<InputAlias, XboxButton>() {
@@ -50,8 +50,8 @@ public class InputManager : Singleton<InputManager> {
     };
 
     private Dictionary<InputAlias, XboxAxis> _xboxAxis = new Dictionary<InputAlias, XboxAxis>() {
-        { InputAlias.Horizontal, XboxAxis.RightStickX },
-        { InputAlias.Vertical, XboxAxis.RightStickY }
+        { InputAlias.Horizontal, XboxAxis.LeftStickX },
+        { InputAlias.Vertical, XboxAxis.LeftStickY }
     };
 
     protected InputManager() {}
@@ -121,8 +121,7 @@ public class InputManager : Singleton<InputManager> {
         if (inputIndex == 0) {
             return Input.GetAxis(_keyboardAxis[alias]);
         } else {
-            return 0f;
-//            return XCI.GetAxis(_xboxAxis[alias], inputIndex);
+            return XCI.GetAxis(_xboxAxis[alias], inputIndex);
         }
     }
 
