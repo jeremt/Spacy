@@ -21,7 +21,7 @@ public class GameManager : Singleton<GameManager> {
     private List<Color> _colors = new List<Color> {
         new Color(0.8f, 0.2f, 0.2f, 1f),
         new Color(0.2f, 0.8f, 0.2f, 1f),
-        new Color(0.2f, 0.2f, 0.8f, 1f),
+        new Color(0.2f, 0.8f, 0.8f, 1f),
         new Color(0.8f, 0.8f, 0.2f, 1f),
         new Color(0.8f, 0.2f, 0.8f, 1f)
     };
@@ -29,7 +29,7 @@ public class GameManager : Singleton<GameManager> {
     protected GameManager() {}
 
     public void SetPlayer(int index, int inputIndex) {
-        var color = _colors[Random.Range(0, NumberOfPlayers)];
+        var color = _colors[Random.Range(0, _colors.Count)];
         _colors.Remove(color);
         _players[index] = new PlayerData(inputIndex, color);
     }
@@ -41,6 +41,16 @@ public class GameManager : Singleton<GameManager> {
 
     public PlayerData GetPlayer(int index) {
         return _players[index];
+    }
+
+    public void ChangePlayerColor(int index) {
+        if (_colors.Count > 0) {
+            var oldColor = _players[index].SkinColor;
+            var newColor = _colors[Random.Range(0, _colors.Count)];
+            _colors.Remove(newColor);
+            _colors.Add(oldColor);
+            _players[index].SkinColor = newColor;
+        }
     }
 
     public int GetNextPlayerIndex() {

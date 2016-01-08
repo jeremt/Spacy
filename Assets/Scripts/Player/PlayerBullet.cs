@@ -13,7 +13,7 @@ public class PlayerBullet : MonoBehaviour {
             // Add score to player
             // Kill player
             _explode();
-        } else if (collider.tag == "Wall") {
+        } else if (collider.tag == "Solid") {
             _explode();
         }
     }

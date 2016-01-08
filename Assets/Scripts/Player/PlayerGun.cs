@@ -3,9 +3,6 @@ using System.Collections;
 
 public class PlayerGun : MonoBehaviour {
 
-    // Gun inputs
-    private string AxisShoot { get { return InputIndex + "_Shoot"; } }
-
     // PlayerGun API
     public int InputIndex = 0;
     public float ShootInterval = 0.2f;

@@ -23,6 +23,8 @@ public class CharactersPage : MonoBehaviour {
             if (player != null) {
                 if (InputManager.Instance.GetKeyUp(InputAlias.Cancel, player.InputIndex)) {
                     playerCard.DeselectPlayer();
+                } else if (InputManager.Instance.GetKeyUp(InputAlias.Alt, player.InputIndex)) {
+                    playerCard.ChangePlayerSkin();
                 }
             } else {
                 if (GameManager.Instance.GetNextPlayerIndex() == playerIndex) {

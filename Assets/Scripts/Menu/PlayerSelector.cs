@@ -21,6 +21,15 @@ public class PlayerSelector : MonoBehaviour {
         DeviceImage.overrideSprite = DevicesSprite[inputIndex];
     }
 
+    public void ChangePlayerSkin() {
+        var player = GameManager.Instance.GetPlayer(Index);
+        if (player != null) {
+            GameManager.Instance.ChangePlayerColor(Index);
+            PlayerImage.color = player.SkinColor;
+            Text.color = player.SkinColor;
+        }
+    }
+
     public void DeselectPlayer() {
         if (GameManager.Instance.GetPlayer(Index) != null) {
             PlayerImage.color = new Color(1f, 1f, 1f, 125f/255f);
