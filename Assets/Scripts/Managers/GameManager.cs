@@ -5,6 +5,8 @@ using System.Collections.Generic;
 public class PlayerData {
     public int InputIndex;
     public Color SkinColor;
+    public int NumberOfKills = 0;
+    public int NumberOfDeaths = 0;
 
     public PlayerData(int inputIndex, Color skinColor) {
         InputIndex = inputIndex;
