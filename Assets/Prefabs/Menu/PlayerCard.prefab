@@ -117,10 +117,10 @@ MonoBehaviour:
   DeviceImage: {fileID: 11489138}
   DevicesSprite:
   - {fileID: 21300008, guid: caceb787365be4006a6eff3746c4dc15, type: 3}
+  - {fileID: 21300000, guid: caceb787365be4006a6eff3746c4dc15, type: 3}
   - {fileID: 21300002, guid: caceb787365be4006a6eff3746c4dc15, type: 3}
   - {fileID: 21300004, guid: caceb787365be4006a6eff3746c4dc15, type: 3}
   - {fileID: 21300006, guid: caceb787365be4006a6eff3746c4dc15, type: 3}
-  - {fileID: 21300000, guid: caceb787365be4006a6eff3746c4dc15, type: 3}
   - {fileID: 21300010, guid: caceb787365be4006a6eff3746c4dc15, type: 3}
 --- !u!114 &11414078
 MonoBehaviour:
@@ -498,7 +498,22 @@ Prefab:
     - target: {fileID: 0}
       propertyPath: DevicesSprite.Array.data[4]
       value: 
+      objectReference: {fileID: 21300006, guid: caceb787365be4006a6eff3746c4dc15,
+        type: 3}
+    - target: {fileID: 0}
+      propertyPath: DevicesSprite.Array.data[1]
+      value: 
       objectReference: {fileID: 21300000, guid: caceb787365be4006a6eff3746c4dc15,
+        type: 3}
+    - target: {fileID: 0}
+      propertyPath: DevicesSprite.Array.data[2]
+      value: 
+      objectReference: {fileID: 21300002, guid: caceb787365be4006a6eff3746c4dc15,
+        type: 3}
+    - target: {fileID: 0}
+      propertyPath: DevicesSprite.Array.data[3]
+      value: 
+      objectReference: {fileID: 21300004, guid: caceb787365be4006a6eff3746c4dc15,
         type: 3}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}

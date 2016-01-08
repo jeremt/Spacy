@@ -92,6 +92,15 @@ public class GameManager : Singleton<GameManager> {
         _players[index] = null;
     }
 
+    public void RemovePlayers() {
+        for (int i = 0; i < NumberOfPlayers; ++i) {
+            if (_players[i] != null) {
+                _colors.Add(_players[i].SkinColor);
+                _players[i] = null;
+            }
+        }
+    }
+
     public PlayerData GetPlayer(int index) {
         return _players[index];
     }

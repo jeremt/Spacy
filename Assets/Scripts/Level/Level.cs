@@ -4,6 +4,7 @@ using System.Collections;
 public class Level : MonoBehaviour {
 
     // API
+    public GameOver GameOverPopup;
     public SurvivalMode SurvivalMode;
     public TimeMode TimeMode;
 
@@ -25,7 +26,11 @@ public class Level : MonoBehaviour {
     }
 
     public void GameOver() {
-        Debug.Log("Game Over");
+        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+        foreach (GameObject player in players) {
+            Destroy(player);
+        }
+        GameOverPopup.Show();
     }
 
 }
