@@ -13,7 +13,7 @@ GameObject:
   - 61: {fileID: 6186876}
   m_Layer: 10
   m_Name: Platform
-  m_TagString: Wall
+  m_TagString: Platform
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -108,7 +108,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: m_TagString
-      value: Wall
+      value: Platform
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: m_Layer
