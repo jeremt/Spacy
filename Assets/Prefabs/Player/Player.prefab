@@ -9,13 +9,13 @@ GameObject:
   m_Component:
   - 4: {fileID: 437554}
   - 212: {fileID: 21211620}
-  - 95: {fileID: 9536782}
   - 114: {fileID: 11403404}
   - 114: {fileID: 11433606}
   - 114: {fileID: 11440104}
   - 61: {fileID: 6111930}
   - 50: {fileID: 5025912}
   - 114: {fileID: 11473256}
+  - 95: {fileID: 9514936}
   m_Layer: 8
   m_Name: Player
   m_TagString: Player
@@ -30,7 +30,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 135202}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: .167999998, y: .0560000017, z: 0}
+  m_LocalPosition: {x: 0.168, y: 0.056, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -42,9 +42,10 @@ Rigidbody2D:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 135202}
+  m_UseAutoMass: 0
   m_Mass: 1
   m_LinearDrag: 0
-  m_AngularDrag: .0500000007
+  m_AngularDrag: 0.05
   m_GravityScale: 1
   m_IsKinematic: 1
   m_Interpolate: 0
@@ -58,13 +59,14 @@ BoxCollider2D:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 135202}
   m_Enabled: 1
+  m_Density: 1
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_UsedByEffector: 0
-  m_Offset: {x: 0, y: -.00999999978}
+  m_Offset: {x: 0, y: -0.01}
   serializedVersion: 2
-  m_Size: {x: .0700000003, y: .140000001}
---- !u!95 &9536782
+  m_Size: {x: 0.07, y: 0.14}
+--- !u!95 &9514936
 Animator:
   serializedVersion: 3
   m_ObjectHideFlags: 1
@@ -73,7 +75,7 @@ Animator:
   m_GameObject: {fileID: 135202}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 8bf2737e1618e2f4691c40ca249df731, type: 2}
+  m_Controller: {fileID: 9100000, guid: 349e9420e3b304f2f874d37f8ff76a43, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -95,11 +97,12 @@ MonoBehaviour:
   Index: 0
   InputIndex: 0
   MoveSpeed: 1
-  AccelerationAirborne: .100000001
-  AccelerationGrounded: .100000001
+  AccelerationAirborne: 0.1
+  AccelerationGrounded: 0.1
+  FacingRight: 1
   NumberOfAirJumps: 1
-  JumpHeight: .400000006
-  JumpTimeApex: .319999993
+  JumpHeight: 0.4
+  JumpTimeApex: 0.32
 --- !u!114 &11433606
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -131,7 +134,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   InputIndex: 0
-  ShootInterval: .200000003
+  ShootInterval: 0.2
   BulletSpeed: 5
   Bullet: {fileID: 5088598, guid: a8c9bdb64c12944f2a6526f79fbe61b4, type: 2}
 --- !u!114 &11473256
@@ -168,13 +171,15 @@ SpriteRenderer:
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
   m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: .5
+  m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -858009465
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300040, guid: fcd6dab4db75e5445a710347c394e7b4, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_FlipX: 0
+  m_FlipY: 0
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1
@@ -202,6 +207,10 @@ Prefab:
       propertyPath: PlatformLayerMask.m_Bits
       value: 1024
       objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 349e9420e3b304f2f874d37f8ff76a43, type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 135202}
