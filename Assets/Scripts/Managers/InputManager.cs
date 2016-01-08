@@ -4,8 +4,8 @@ using System.Collections.Generic;
 using XboxCtrlrInput;
 
 public enum InputAlias {
-//    Horizontal,
-//    Vertical,
+    Horizontal,
+    Vertical,
 
     Start,
     Submit,
@@ -22,7 +22,7 @@ public class InputManager : Singleton<InputManager> {
 
     public const int NumberOfInputs = 5;
 
-    private Dictionary<InputAlias, KeyCode> _keyboardAliases = new Dictionary<InputAlias, KeyCode>() {
+    private Dictionary<InputAlias, KeyCode> _keyboardButtons = new Dictionary<InputAlias, KeyCode>() {
         { InputAlias.Start, KeyCode.Return },
         { InputAlias.Submit, KeyCode.Return },
         { InputAlias.Cancel, KeyCode.Escape },
@@ -33,7 +33,12 @@ public class InputManager : Singleton<InputManager> {
         { InputAlias.Crouch, KeyCode.V }
     };
 
-    private Dictionary<InputAlias, XboxButton> _xboxAliases = new Dictionary<InputAlias, XboxButton>() {
+    private Dictionary<InputAlias, string> _keyboardAxis = new Dictionary<InputAlias, string>() {
+        { InputAlias.Horizontal, "0_Horizontal" },
+        { InputAlias.Vertical, "0_Vertical" }
+    };
+
+    private Dictionary<InputAlias, XboxButton> _xboxButtons = new Dictionary<InputAlias, XboxButton>() {
         { InputAlias.Start, XboxButton.Start },
         { InputAlias.Submit, XboxButton.A },
         { InputAlias.Cancel, XboxButton.B },
@@ -42,6 +47,11 @@ public class InputManager : Singleton<InputManager> {
         { InputAlias.Shoot, XboxButton.RightBumper }, // TODO: use RightTrigger but it's an axis :(
         { InputAlias.Shield, XboxButton.X },
         { InputAlias.Crouch, XboxButton.B }
+    };
+
+    private Dictionary<InputAlias, XboxAxis> _xboxAxis = new Dictionary<InputAlias, XboxAxis>() {
+        { InputAlias.Horizontal, XboxAxis.RightStickX },
+        { InputAlias.Vertical, XboxAxis.RightStickY }
     };
 
     protected InputManager() {}
@@ -57,9 +67,9 @@ public class InputManager : Singleton<InputManager> {
 
     public bool GetKeyUp(InputAlias alias, int inputIndex) {
         if (inputIndex == 0) {
-            return Input.GetKeyUp(_keyboardAliases[alias]);
+            return Input.GetKeyUp(_keyboardButtons[alias]);
         } else {
-            return XCI.GetButtonUp(_xboxAliases[alias], inputIndex);
+            return XCI.GetButtonUp(_xboxButtons[alias], inputIndex);
         }
     }
 
@@ -74,9 +84,9 @@ public class InputManager : Singleton<InputManager> {
 
     public bool GetKeyDown(InputAlias alias, int inputIndex) {
         if (inputIndex == 0) {
-            return Input.GetKeyDown(_keyboardAliases[alias]);
+            return Input.GetKeyDown(_keyboardButtons[alias]);
         } else {
-            return XCI.GetButtonDown(_xboxAliases[alias], inputIndex);
+            return XCI.GetButtonDown(_xboxButtons[alias], inputIndex);
         }
     }
 
@@ -91,9 +101,28 @@ public class InputManager : Singleton<InputManager> {
 
     public bool GetKey(InputAlias alias, int inputIndex) {
         if (inputIndex == 0) {
-            return Input.GetKey(_keyboardAliases[alias]);
+            return Input.GetKey(_keyboardButtons[alias]);
         } else {
-            return XCI.GetButton(_xboxAliases[alias], inputIndex);
+            return XCI.GetButton(_xboxButtons[alias], inputIndex);
+        }
+    }
+
+    public float GetAxis(InputAlias alias) {
+        float max = 0;
+        for (int i = 0; i < NumberOfInputs; ++i) {
+            if (Mathf.Abs(GetAxis(alias, i)) > Mathf.Abs(max)) {
+                max = GetAxis(alias, i);
+            }
+        }
+        return max;
+    }
+
+    public float GetAxis(InputAlias alias, int inputIndex) {
+        if (inputIndex == 0) {
+            return Input.GetAxis(_keyboardAxis[alias]);
+        } else {
+            return 0f;
+//            return XCI.GetAxis(_xboxAxis[alias], inputIndex);
         }
     }
 

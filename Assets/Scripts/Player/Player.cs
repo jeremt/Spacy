@@ -3,11 +3,6 @@
 [RequireComponent(typeof (PlayerController))]
 public class Player : MonoBehaviour {
 
-    // Player inputs
-    private string InputHorizontal { get { return InputIndex + "_Horizontal"; } }
-    private string InputVertical { get { return InputIndex + "_Vertical"; } }
-    private string InputJump { get { return InputIndex + "_Jump"; } }
-
     // Player API
     public int Index = 0;
     public int InputIndex = 0;
@@ -40,7 +35,7 @@ public class Player : MonoBehaviour {
     }
 
     public void Update() {
-        var input = new Vector2(Input.GetAxisRaw(InputHorizontal), Input.GetAxisRaw(InputVertical));
+        var input = new Vector2(InputManager.Instance.GetAxis(InputAlias.Horizontal), InputManager.Instance.GetAxis(InputAlias.Vertical));
         if (_controller.Collisions.Above || _controller.Collisions.Below) {
             _velocity.y = 0;
         }
