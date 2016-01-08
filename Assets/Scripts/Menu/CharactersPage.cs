@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+[RequireComponent(typeof (PageTransition))]
 public class CharactersPage : MonoBehaviour {
 
     public PlayerSelector[] PlayerCards;
@@ -15,7 +16,6 @@ public class CharactersPage : MonoBehaviour {
                 !GameManager.Instance.IsInputAvailable(inputIndex) &&
                 GameManager.Instance.GetNextPlayerIndex() > 1) {
                 GetComponent<PageTransition>().GoNext();
-//                Application.LoadLevel("Runaway");
             }
         }
         for (int playerIndex = 0; playerIndex < 5; ++playerIndex) {

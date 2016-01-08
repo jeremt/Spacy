@@ -28,6 +28,9 @@ public class GameManager : Singleton<GameManager> {
         new Color(0.8f, 0.2f, 0.8f, 1f)
     };
 
+    private int _modeIndex;
+    private int _modeOptionIndex;
+
     protected GameManager() {}
 
     public void SetPlayer(int index, int inputIndex) {
@@ -71,6 +74,11 @@ public class GameManager : Singleton<GameManager> {
             }
         }
         return true;
+    }
+
+    public void SetMode(int modeIndex, int modeOptionIndex) {
+        _modeIndex = modeIndex;
+        _modeOptionIndex = modeOptionIndex;
     }
 
 }
