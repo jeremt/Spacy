@@ -9,12 +9,13 @@ public class CharactersPage : MonoBehaviour {
         for (int inputIndex = 0; inputIndex < InputManager.NumberOfInputs; ++inputIndex) {
             if (InputManager.Instance.GetKeyUp(InputAlias.Cancel, inputIndex) && GameManager.Instance.IsInputAvailable(inputIndex)) {
                 _deselectAllPlayers();
-                GetComponent<PageTransition>().StartTransition();
+                GetComponent<PageTransition>().GoPrevious();
             }
             if (InputManager.Instance.GetKeyUp(InputAlias.Submit, inputIndex) &&
                 !GameManager.Instance.IsInputAvailable(inputIndex) &&
                 GameManager.Instance.GetNextPlayerIndex() > 1) {
-                Application.LoadLevel("Runaway");
+                GetComponent<PageTransition>().GoNext();
+//                Application.LoadLevel("Runaway");
             }
         }
         for (int playerIndex = 0; playerIndex < 5; ++playerIndex) {
