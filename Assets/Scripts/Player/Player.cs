@@ -11,6 +11,7 @@ public class Player : MonoBehaviour {
     public float MoveSpeed = 1f;
     public float AccelerationAirborne = 0.1f;
     public float AccelerationGrounded = 0.1f;
+    public bool FacingRight = true;
 
     // Player jump constants
     public int NumberOfAirJumps = 1;
@@ -19,6 +20,7 @@ public class Player : MonoBehaviour {
 
     // Components
     private PlayerController _controller;
+    private Animator _animator;
 
     // Player movement internals
     private int _jumps;
@@ -27,7 +29,10 @@ public class Player : MonoBehaviour {
     private float _moveAcceleration;
     private Vector3 _velocity;
 
-    public void Awake() { _controller = GetComponent<PlayerController>(); }
+    public void Awake() {
+        _controller = GetComponent<PlayerController>();
+        _animator = GetComponent<Animator>();
+    }
 
     public void Start() {
         _gravity = - (2 * JumpHeight) / Mathf.Pow(JumpTimeApex, 2);
@@ -54,7 +59,20 @@ public class Player : MonoBehaviour {
         }
         _velocity.x = Mathf.SmoothDamp(_velocity.x, input.x * MoveSpeed, ref _moveAcceleration, _controller.Collisions.Below ? AccelerationGrounded : AccelerationAirborne);
         _velocity.y += _gravity * Time.deltaTime;
+
+        if ((FacingRight && _velocity.x < 0) || (!FacingRight && _velocity.x > 0)) {
+            _flipDirection();
+        }
+
+        _animator.SetFloat("PlayerSpeed", Mathf.Abs(_velocity.x));
         _controller.Move(_velocity * Time.deltaTime);
+    }
+
+    private void _flipDirection() {
+        FacingRight = !FacingRight;
+        var scale = transform.localScale;
+        scale.x *= -1;
+        transform.localScale = scale;
     }
 
 }
