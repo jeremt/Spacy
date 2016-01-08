@@ -80,4 +80,21 @@ public class InputManager : Singleton<InputManager> {
         }
     }
 
+    public bool GetKey(InputAlias alias) {
+        for (int i = 0; i < NumberOfInputs; ++i) {
+            if (GetKey(alias, i)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public bool GetKey(InputAlias alias, int inputIndex) {
+        if (inputIndex == 0) {
+            return Input.GetKey(_keyboardAliases[alias]);
+        } else {
+            return XCI.GetButton(_xboxAliases[alias], inputIndex);
+        }
+    }
+
 }

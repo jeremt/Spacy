@@ -44,10 +44,10 @@ public class Player : MonoBehaviour {
         if (_controller.Collisions.Above || _controller.Collisions.Below) {
             _velocity.y = 0;
         }
-        if (Input.GetButtonDown(InputJump) && _controller.Collisions.Below) {
+        if (InputManager.Instance.GetKeyDown(InputAlias.Jump, InputIndex) && _controller.Collisions.Below) {
             _velocity.y = _jumpVelocity;
         }
-        if (Input.GetButtonDown(InputJump) && !_controller.Collisions.Below && _jumps < NumberOfAirJumps) {
+        if (InputManager.Instance.GetKeyDown(InputAlias.Jump, InputIndex) && !_controller.Collisions.Below && _jumps < NumberOfAirJumps) {
             _velocity.y = _jumpVelocity;
             _jumps += 1;
         }

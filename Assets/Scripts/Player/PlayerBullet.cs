@@ -19,7 +19,8 @@ public class PlayerBullet : MonoBehaviour {
     }
 
     private void _explode() {
-        var bulletInstance = Instantiate(Explosion, transform.position, Quaternion.Euler(new Vector3(0,0,0))) as Rigidbody2D;
+        var explosionInstance = Instantiate(Explosion, transform.position, Quaternion.Euler(new Vector3(0,0,0))) as GameObject;
+        explosionInstance.GetComponent<ParticleSystem>().startColor = GameManager.Instance.GetPlayer(PlayerIndex).SkinColor;
         Destroy(gameObject);
 
     }

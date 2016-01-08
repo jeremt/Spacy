@@ -18,12 +18,12 @@ public class PlayerGun : MonoBehaviour {
 
 	
     public void Update() {
-        _isShooting = Input.GetAxis(AxisShoot) > float.Epsilon;
-        if (Input.GetButtonDown(AxisShoot)) {
+        _isShooting = InputManager.Instance.GetKey(InputAlias.Shoot, InputIndex);
+        if (InputManager.Instance.GetKeyDown(InputAlias.Shoot, InputIndex)) {
             _currentShootingTime = 0f;
             _isShooting = true;
             _shootBullet();
-        } else if (Input.GetButtonUp(AxisShoot)) {
+        } else if (InputManager.Instance.GetKeyUp(InputAlias.Shoot, InputIndex)) {
             _isShooting = false;
         }
         if (_isShooting) {
@@ -41,6 +41,7 @@ public class PlayerGun : MonoBehaviour {
         var bulletInstance = Instantiate(Bullet, transform.position, Quaternion.Euler(new Vector3(0,0,0))) as Rigidbody2D;
         if (bulletInstance != null) {
             bulletInstance.velocity = new Vector2(BulletSpeed, 0);
+            bulletInstance.GetComponent<SpriteRenderer>().color = GameManager.Instance.GetPlayer(GetComponent<Player>().Index).SkinColor;
             bulletInstance.GetComponent<PlayerBullet>().PlayerIndex = GetComponent<Player>().Index;
         }
     }
