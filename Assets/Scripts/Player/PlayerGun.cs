@@ -11,6 +11,7 @@ public class PlayerGun : MonoBehaviour {
 
     // Components
     private Player _player;
+    private Animator _animator;
 
     // PlayerGun internals
     private bool _isShooting;
@@ -18,6 +19,7 @@ public class PlayerGun : MonoBehaviour {
 
     public void Awake() {
         _player = GetComponent<Player>();
+        _animator = GetComponent<Animator>();
     }
 	
     public void Update() {
@@ -25,9 +27,11 @@ public class PlayerGun : MonoBehaviour {
         if (InputManager.Instance.GetKeyDown(InputAlias.Shoot, InputIndex)) {
             _currentShootingTime = 0f;
             _isShooting = true;
+            _animator.SetBool("Shooting", true);
             _shootBullet();
         } else if (InputManager.Instance.GetKeyUp(InputAlias.Shoot, InputIndex)) {
             _isShooting = false;
+            _animator.SetBool("Shooting", false);
         }
         if (_isShooting) {
             if (_currentShootingTime > ShootInterval) {
