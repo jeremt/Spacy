@@ -63,7 +63,7 @@ public class Player : MonoBehaviour {
         if ((FacingRight && _velocity.x < 0) || (!FacingRight && _velocity.x > 0)) {
             _flipDirection();
         }
-        _animator.SetFloat("PlayerSpeed", Mathf.Abs(_velocity.x * Time.deltaTime));
+        _animator.SetFloat("Speed", Mathf.Abs(_velocity.x * Time.deltaTime));
         _controller.Move(_velocity * Time.deltaTime);
     }
 
