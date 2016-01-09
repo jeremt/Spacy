@@ -20,6 +20,7 @@ public class PlayerBullet : MonoBehaviour {
     void OnTriggerEnter2D(Collider2D collider) {
         if (collider.tag == "Player" && collider.GetComponent<Player>().Index != PlayerIndex) {
             if (collider.GetComponent<PlayerShield>().Activated) {
+                collider.GetComponent<PlayerShield>().ResetRespawn();
                 _rigidbody.velocity = new Vector2(-1 * _rigidbody.velocity.x, _rigidbody.velocity.y);
                 PlayerIndex = collider.GetComponent<Player>().Index;
                 GetComponent<SpriteRenderer>().color = GameManager.Instance.GetPlayer(PlayerIndex).SkinColor;

@@ -96,7 +96,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Index: 0
-  InputIndex: 0
   MoveSpeed: 1
   AccelerationAirborne: 0.1
   AccelerationGrounded: 0.1
@@ -115,7 +114,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3fe73a83aac8456e9eedcedeb443f42, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Duration: 0.5
+  RespawnDuration: 1
+  ShieldDuration: 0.1
   Shield: {fileID: 131622, guid: 9f562dded18804f3d86294b546ce20a0, type: 2}
   Activated: 0
 --- !u!114 &11433606
@@ -148,7 +148,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 977dd3f6ed28c424898905ede10efee8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  InputIndex: 0
   ShootInterval: 0.2
   BulletSpeed: 5
   Bullet: {fileID: 5088598, guid: a8c9bdb64c12944f2a6526f79fbe61b4, type: 2}
@@ -226,6 +225,10 @@ Prefab:
       propertyPath: m_Controller
       value: 
       objectReference: {fileID: 9100000, guid: 9aba5181c45c4484d95b28d324e1f78c, type: 2}
+    - target: {fileID: 0}
+      propertyPath: RespawnDuration
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 135202}
