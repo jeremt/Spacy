@@ -44,6 +44,7 @@ public class PlayerGun : MonoBehaviour {
         var bulletInstance = Instantiate(Bullet, transform.position, Quaternion.Euler(new Vector3(0,0,0))) as Rigidbody2D;
         if (bulletInstance != null) {
             bulletInstance.velocity = new Vector2(_player.FacingRight ? BulletSpeed : -BulletSpeed, 0);
+            bulletInstance.transform.Translate((_player.FacingRight ? 0.1f : -0.1f), -0.03f, 0f);
             if (!_player.FacingRight) {
                 var scale = bulletInstance.transform.localScale;
                 scale.x *= -1;
