@@ -6,16 +6,21 @@ using System.Collections;
 public class GameOver : MonoBehaviour {
 
     public GameObject[] Cards;
+    public float AnimationDuration = 0.5f;
 
     private bool _hidden = true;
+    private float _currentTime = 0f;
+    private Vector3 _startPosition;
 
     public void Start() {
         transform.Translate(0, -(float)Screen.height, 0);
+        gameObject.SetActive(false);
     }
 
     public void Show() {
-        transform.Translate(0, (float)Screen.height, 0);
-        _hidden = false;
+        _currentTime = AnimationDuration;
+        gameObject.SetActive(true);
+        _startPosition = transform.position;
         for (int playerIndex = 0; playerIndex < GameManager.Instance.GetNextPlayerIndex(); ++playerIndex) {
             Cards[playerIndex].SetActive(true);
             Transform card = Cards[playerIndex].transform;
@@ -29,6 +34,13 @@ public class GameOver : MonoBehaviour {
     }
 
 	void Update () {
+        if (_currentTime > 0) {
+            transform.position = Vector3.Lerp(_startPosition, _startPosition + Vector3.up * (float)Screen.height, _applyEasing(1f - _currentTime / AnimationDuration));
+            _currentTime -= Time.deltaTime;
+            if (_currentTime <= 0) {
+                _hidden = false;
+            }
+        }
         if (_hidden) {
             return;
         }
@@ -40,4 +52,11 @@ public class GameOver : MonoBehaviour {
             SceneManager.LoadScene("Runaway");
         }
 	}
+
+    // CubicOut easing
+    private float _applyEasing(float t) {
+        float f = t - 1.0f;
+        return f * f * f + 1.0f;
+    }
+
 }
