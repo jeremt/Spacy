@@ -9,8 +9,6 @@ public class DebugPlayer : MonoBehaviour {
 	void Start () {
         GameManager.Instance.SetPlayer(0, 0);
         Player.GetComponent<SpriteRenderer>().color = GameManager.Instance.GetPlayer(0).SkinColor;
-        Player.GetComponent<PlayerGun>().InputIndex = 0;
-        Player.GetComponent<Player>().InputIndex = 0;
         Player.GetComponent<Player>().Index = 0;
 	}
 

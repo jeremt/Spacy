@@ -26,9 +26,6 @@ public class PlayerSpawner : MonoBehaviour {
         var player = Instantiate(Player, spawnTransform.position, Quaternion.Euler(new Vector3(0,0,0))) as GameObject;
         player.transform.parent = transform;
         player.GetComponent<SpriteRenderer>().color = GameManager.Instance.GetPlayer(playerIndex).SkinColor;
-        var inputIndex = GameManager.Instance.GetPlayer(playerIndex).InputIndex;
-        player.GetComponent<PlayerGun>().InputIndex = inputIndex;
-        player.GetComponent<Player>().InputIndex = inputIndex;
         player.GetComponent<Player>().Index = playerIndex;
     }
 }

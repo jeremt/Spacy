@@ -16,6 +16,7 @@ GameObject:
   - 50: {fileID: 5025912}
   - 114: {fileID: 11473256}
   - 95: {fileID: 9543012}
+  - 114: {fileID: 11416486}
   m_Layer: 8
   m_Name: Player
   m_TagString: Player
@@ -63,9 +64,9 @@ BoxCollider2D:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_UsedByEffector: 0
-  m_Offset: {x: 0.026289761, y: -0.021761216}
+  m_Offset: {x: 0.031011581, y: -0.020074852}
   serializedVersion: 2
-  m_Size: {x: 0.083836675, y: 0.16352244}
+  m_Size: {x: 0.07169489, y: 0.16014971}
 --- !u!95 &9543012
 Animator:
   serializedVersion: 3
@@ -103,6 +104,20 @@ MonoBehaviour:
   NumberOfAirJumps: 1
   JumpHeight: 0.4
   JumpTimeApex: 0.32
+--- !u!114 &11416486
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 135202}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e3fe73a83aac8456e9eedcedeb443f42, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Duration: 0.5
+  Shield: {fileID: 131622, guid: 9f562dded18804f3d86294b546ce20a0, type: 2}
+  Activated: 0
 --- !u!114 &11433606
 MonoBehaviour:
   m_ObjectHideFlags: 1

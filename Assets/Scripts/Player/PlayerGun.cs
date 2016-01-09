@@ -4,7 +4,6 @@ using System.Collections;
 public class PlayerGun : MonoBehaviour {
 
     // PlayerGun API
-    public int InputIndex = 0;
     public float ShootInterval = 0.2f;
     public float BulletSpeed = 5f;
     public Rigidbody2D Bullet;
@@ -12,6 +11,9 @@ public class PlayerGun : MonoBehaviour {
     // Components
     private Player _player;
     private Animator _animator;
+
+    // Input internals
+    private int _inputIndex;
 
     // PlayerGun internals
     private bool _isShooting;
@@ -21,10 +23,14 @@ public class PlayerGun : MonoBehaviour {
         _player = GetComponent<Player>();
         _animator = GetComponent<Animator>();
     }
+
+    void Start() {
+        _inputIndex = GameManager.Instance.GetPlayer(_player.Index).InputIndex;
+    }
 	
     public void Update() {
-        _isShooting = InputManager.Instance.GetKey(InputAlias.Shoot, InputIndex);
-        if (InputManager.Instance.GetKeyDown(InputAlias.Shoot, InputIndex)) {
+        _isShooting = InputManager.Instance.GetKey(InputAlias.Shoot, _inputIndex);
+        if (InputManager.Instance.GetKeyDown(InputAlias.Shoot, _inputIndex)) {
             _currentShootingTime = 0f;
             _isShooting = true;
 //            _animator.Play(_animator.GetBool("Running") ? "PlayRunShoot" : "PlayerIdleShoot");

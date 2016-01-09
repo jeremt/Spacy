@@ -5,7 +5,6 @@ public class Player : MonoBehaviour {
 
     // Player API
     public int Index = 0;
-    public int InputIndex = 0;
 
     // Player movement constants
     public float MoveSpeed = 1f;
@@ -22,6 +21,8 @@ public class Player : MonoBehaviour {
     private PlayerController _controller;
     private Animator _animator;
 
+    private int _inputIndex;
+
     // Player movement internals
     private int _jumps;
     private float _gravity;
@@ -35,23 +36,24 @@ public class Player : MonoBehaviour {
     }
 
     public void Start() {
+        _inputIndex = GameManager.Instance.GetPlayer(Index).InputIndex;
         _gravity = - (2 * JumpHeight) / Mathf.Pow(JumpTimeApex, 2);
         _jumpVelocity = Mathf.Abs(_gravity) * JumpTimeApex;
     }
 
     public void Update() {
         var input = new Vector2(
-            InputManager.Instance.GetAxis(InputAlias.Horizontal, InputIndex),
-            InputManager.Instance.GetAxis(InputAlias.Vertical, InputIndex)
+            InputManager.Instance.GetAxis(InputAlias.Horizontal, _inputIndex),
+            InputManager.Instance.GetAxis(InputAlias.Vertical, _inputIndex)
         );
         _animator.SetBool("Running", Mathf.Abs(input.x) > 0.01);
         if (_controller.Collisions.Above || _controller.Collisions.Below) {
             _velocity.y = 0;
         }
-        if (InputManager.Instance.GetKeyDown(InputAlias.Jump, InputIndex) && _controller.Collisions.Below) {
+        if (InputManager.Instance.GetKeyDown(InputAlias.Jump, _inputIndex) && _controller.Collisions.Below) {
             _velocity.y = _jumpVelocity;
         }
-        if (InputManager.Instance.GetKeyDown(InputAlias.Jump, InputIndex) && !_controller.Collisions.Below && _jumps < NumberOfAirJumps) {
+        if (InputManager.Instance.GetKeyDown(InputAlias.Jump, _inputIndex) && !_controller.Collisions.Below && _jumps < NumberOfAirJumps) {
             _velocity.y = _jumpVelocity;
             _jumps += 1;
         }
