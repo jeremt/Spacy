@@ -27,11 +27,10 @@ public class PlayerGun : MonoBehaviour {
         if (InputManager.Instance.GetKeyDown(InputAlias.Shoot, InputIndex)) {
             _currentShootingTime = 0f;
             _isShooting = true;
-            _animator.SetBool("Shooting", true);
+            _animator.Play(_animator.GetBool("Running") ? "PlayRunShoot" : "PlayerIdleShoot");
             _shootBullet();
         } else if (InputManager.Instance.GetKeyUp(InputAlias.Shoot, InputIndex)) {
             _isShooting = false;
-            _animator.SetBool("Shooting", false);
         }
         if (_isShooting) {
             if (_currentShootingTime > ShootInterval) {

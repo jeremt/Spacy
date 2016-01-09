@@ -44,6 +44,7 @@ public class Player : MonoBehaviour {
             InputManager.Instance.GetAxis(InputAlias.Horizontal, InputIndex),
             InputManager.Instance.GetAxis(InputAlias.Vertical, InputIndex)
         );
+        _animator.SetBool("Running", Mathf.Abs(input.x) > 0.01);
         if (_controller.Collisions.Above || _controller.Collisions.Below) {
             _velocity.y = 0;
         }
@@ -63,7 +64,6 @@ public class Player : MonoBehaviour {
         if ((FacingRight && _velocity.x < 0) || (!FacingRight && _velocity.x > 0)) {
             _flipDirection();
         }
-        _animator.SetFloat("Speed", Mathf.Abs(_velocity.x * Time.deltaTime));
         _controller.Move(_velocity * Time.deltaTime);
     }
 
