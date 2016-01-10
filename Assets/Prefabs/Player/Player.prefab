@@ -150,8 +150,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShootInterval: 0.2
-  BulletSpeed: 5
-  Bullet: {fileID: 5088598, guid: a8c9bdb64c12944f2a6526f79fbe61b4, type: 2}
+  BulletSpeed: 0.05
+  Bullet: {fileID: 11443182, guid: a8c9bdb64c12944f2a6526f79fbe61b4, type: 2}
 --- !u!114 &11473256
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -245,6 +245,15 @@ Prefab:
     - target: {fileID: 0}
       propertyPath: m_Size.y
       value: 0.14
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: Bullet
+      value: 
+      objectReference: {fileID: 11443182, guid: a8c9bdb64c12944f2a6526f79fbe61b4,
+        type: 2}
+    - target: {fileID: 0}
+      propertyPath: BulletSpeed
+      value: 0.05
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
