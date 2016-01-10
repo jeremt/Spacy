@@ -7,6 +7,9 @@ public class CharactersPage : MonoBehaviour {
     public PlayerSelector[] PlayerCards;
 
 	void Update() {
+        if (GetComponent<PageTransition>().IsTransitioning()) {
+            return;
+        }
         for (int inputIndex = 0; inputIndex < InputManager.NumberOfInputs; ++inputIndex) {
             if (InputManager.Instance.GetKeyUp(InputAlias.Cancel, inputIndex) && GameManager.Instance.IsInputAvailable(inputIndex)) {
                 _deselectAllPlayers();
