@@ -2615,6 +2615,9 @@ MonoBehaviour:
   - {fileID: 739681596}
   - {fileID: 1988802814}
   - {fileID: 2145945681}
+  AnimationDuration: 0.5
+  DisabledTime: 3
+  _isMoving: 0
 --- !u!1001 &824754748
 Prefab:
   m_ObjectHideFlags: 0
@@ -4896,7 +4899,7 @@ Transform:
   m_GameObject: {fileID: 2127695246}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.05, y: 1, z: 1}
+  m_LocalScale: {x: 1.1, y: 1.1, z: 1}
   m_Children: []
   m_Father: {fileID: 1917363387}
   m_RootOrder: 0
