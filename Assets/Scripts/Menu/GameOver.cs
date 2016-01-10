@@ -7,7 +7,8 @@ public class GameOver : MonoBehaviour {
 
     public GameObject[] Cards;
     public float AnimationDuration = 0.5f;
-
+    public float DisabledTime = 3f;
+    public bool _isMoving = false;
     private bool _hidden = true;
     private float _currentTime = 0f;
     private Vector3 _startPosition;
@@ -20,6 +21,7 @@ public class GameOver : MonoBehaviour {
     public void Show() {
         _currentTime = AnimationDuration;
         gameObject.SetActive(true);
+        _isMoving = true;
         _startPosition = transform.position;
         for (int playerIndex = 0; playerIndex < GameManager.Instance.GetNextPlayerIndex(); ++playerIndex) {
             Cards[playerIndex].SetActive(true);
@@ -35,10 +37,18 @@ public class GameOver : MonoBehaviour {
 
 	void Update () {
         if (_currentTime > 0) {
-            transform.position = Vector3.Lerp(_startPosition, _startPosition + Vector3.up * (float)Screen.height, _applyEasing(1f - _currentTime / AnimationDuration));
-            _currentTime -= Time.deltaTime;
-            if (_currentTime <= 0) {
-                _hidden = false;
+            if (_isMoving) {
+                transform.position = Vector3.Lerp(_startPosition, _startPosition + Vector3.up * (float)Screen.height, _applyEasing(1f - _currentTime / AnimationDuration));
+                _currentTime -= Time.deltaTime;
+                if (_currentTime <= 0) {
+                    _currentTime = DisabledTime;
+                    _isMoving = false;
+                }
+            } else {
+                _currentTime -= Time.deltaTime;
+                if (_currentTime <= 0) {
+                    _hidden = false;
+                }
             }
         }
         if (_hidden) {
