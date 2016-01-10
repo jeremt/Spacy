@@ -47,7 +47,7 @@ Rigidbody2D:
   m_IsKinematic: 0
   m_Interpolate: 0
   m_SleepingMode: 1
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
   m_Constraints: 6
 --- !u!61 &6190232
 BoxCollider2D:
@@ -88,7 +88,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Explosion: {fileID: 143816, guid: 3930a74b77d784a4b9f9e78ffffa6a3f, type: 2}
-  PlayerSpawner: {fileID: 11452168, guid: e51b445eed84c439da19597501b98a1c, type: 2}
   PlayerIndex: -1
 --- !u!212 &21229604
 SpriteRenderer:
@@ -156,6 +155,10 @@ Prefab:
       value: 
       objectReference: {fileID: 11452168, guid: e51b445eed84c439da19597501b98a1c,
         type: 2}
+    - target: {fileID: 0}
+      propertyPath: m_CollisionDetection
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 174752}

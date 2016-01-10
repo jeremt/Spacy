@@ -5,8 +5,8 @@ public class PlayerGun : MonoBehaviour {
 
     // PlayerGun API
     public float ShootInterval = 0.2f;
-    public float BulletSpeed = 5f;
-    public Rigidbody2D Bullet;
+    public float BulletSpeed = 0.2f;
+    public PlayerBullet Bullet;
 
     // Components
     private Player _player;
@@ -34,7 +34,7 @@ public class PlayerGun : MonoBehaviour {
             _currentShootingTime = 0f;
             _isShooting = true;
 //            _animator.Play(_animator.GetBool("Running") ? "PlayRunShoot" : "PlayerIdleShoot");
-            _shootBullet();
+            ShootBullet();
         }// else if (InputManager.Instance.GetKeyUp(InputAlias.Shoot, InputIndex)) {
 //            _isShooting = false;
         //}
@@ -49,10 +49,17 @@ public class PlayerGun : MonoBehaviour {
 
     }
 
-    private void _shootBullet() {
-        var bulletInstance = Instantiate(Bullet, transform.position, Quaternion.Euler(new Vector3(0,0,0))) as Rigidbody2D;
+    private void ShootBullet() {
+        var bulletInstance = Instantiate(Bullet, transform.position, Quaternion.Euler(new Vector3(0,0,0))) as PlayerBullet;
         if (bulletInstance != null) {
-            bulletInstance.velocity = new Vector2(_player.FacingRight ? BulletSpeed : -BulletSpeed, 0);
+            float direction = InputManager.Instance.GetAxis(InputAlias.Vertical, _inputIndex);
+            if (Mathf.Abs(direction) < 0.2f) {
+                bulletInstance.Speed = new Vector2(_player.FacingRight ? BulletSpeed : -BulletSpeed, 0);
+            } else if (direction < 0f) {
+                bulletInstance.Speed = new Vector2(_player.FacingRight ? BulletSpeed : -BulletSpeed, BulletSpeed);
+            } else if (direction > 0f) {
+                bulletInstance.Speed = new Vector2(_player.FacingRight ? BulletSpeed : -BulletSpeed, -BulletSpeed);
+            }
             bulletInstance.transform.Translate((_player.FacingRight ? 0.1f : -0.1f), -0.03f, 0f);
             if (!_player.FacingRight) {
                 var scale = bulletInstance.transform.localScale;

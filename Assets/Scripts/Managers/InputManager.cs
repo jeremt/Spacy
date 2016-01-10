@@ -27,8 +27,8 @@ public class InputManager : Singleton<InputManager> {
         { InputAlias.Submit, KeyCode.Return },
         { InputAlias.Cancel, KeyCode.Escape },
         { InputAlias.Alt, KeyCode.C },
-        { InputAlias.Jump, KeyCode.Space },
-        { InputAlias.Shoot, KeyCode.LeftShift },
+        { InputAlias.Jump, KeyCode.LeftShift },
+        { InputAlias.Shoot, KeyCode.Space },
         { InputAlias.Shield, KeyCode.X },
         { InputAlias.Crouch, KeyCode.V }
     };
