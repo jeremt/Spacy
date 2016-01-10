@@ -24,7 +24,7 @@ public class PlayerGun : MonoBehaviour {
         _animator = GetComponent<Animator>();
     }
 
-    void Start() {
+    public void Start() {
         _inputIndex = GameManager.Instance.GetPlayer(_player.Index).InputIndex;
     }
 	

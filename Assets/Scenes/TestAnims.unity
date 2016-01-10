@@ -623,12 +623,6 @@ Prefab:
 Transform:
   m_PrefabParentObject: {fileID: 459414, guid: bc51796ec1d5d43a4b0ecea85254943c, type: 2}
   m_PrefabInternal: {fileID: 553179174}
---- !u!114 &992358523 stripped
-MonoBehaviour:
-  m_PrefabParentObject: {fileID: 11403404, guid: e0548659e06b5c343b2b23290671314b,
-    type: 2}
-  m_PrefabInternal: {fileID: 1102468258}
-  m_Script: {fileID: 11500000, guid: 0baec9f4646be2e46bcf4f44f87dc87b, type: 3}
 --- !u!1 &1017887940
 GameObject:
   m_ObjectHideFlags: 0
@@ -878,6 +872,26 @@ Prefab:
       propertyPath: Duration
       value: 0.1
       objectReference: {fileID: 0}
+    - target: {fileID: 11403404, guid: e0548659e06b5c343b2b23290671314b, type: 2}
+      propertyPath: CreateDebug
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6111930, guid: e0548659e06b5c343b2b23290671314b, type: 2}
+      propertyPath: m_Offset.x
+      value: 0.015
+      objectReference: {fileID: 0}
+    - target: {fileID: 6111930, guid: e0548659e06b5c343b2b23290671314b, type: 2}
+      propertyPath: m_Size.x
+      value: 0.07
+      objectReference: {fileID: 0}
+    - target: {fileID: 6111930, guid: e0548659e06b5c343b2b23290671314b, type: 2}
+      propertyPath: m_Offset.y
+      value: -0.03
+      objectReference: {fileID: 0}
+    - target: {fileID: 6111930, guid: e0548659e06b5c343b2b23290671314b, type: 2}
+      propertyPath: m_Size.y
+      value: 0.14
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: e0548659e06b5c343b2b23290671314b, type: 2}
   m_IsPrefabParent: 0
@@ -916,7 +930,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e727e4eb2fbe42bfad7c14ef33b908f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Player: {fileID: 992358523}
 --- !u!4 &1413111672
 Transform:
   m_ObjectHideFlags: 0

@@ -13,18 +13,18 @@ public class PlayerShield : MonoBehaviour {
     private int _inputIndex;
     private float _currentTime = 0f;
 
-    void Start() {
+    public void Start() {
         _inputIndex = GameManager.Instance.GetPlayer(GetComponent<Player>().Index).InputIndex;
     }
 
-	void Update() {
+    public void Update() {
         if (_currentTime > 0f) {
             _currentTime -= Time.deltaTime;
         } else if (InputManager.Instance.GetKeyDown(InputAlias.Shield, _inputIndex)) {
             Activated = true;
             _currentTime = RespawnDuration;
             _shieldInstance = Instantiate(Shield, transform.position + Vector3.down * 0.05f, Quaternion.Euler(new Vector3(0, 0, 0))) as GameObject;
-            StartCoroutine(DesactivateShield());
+            StartCoroutine(DeactivateShield());
         }
         if (_shieldInstance != null) {
             _shieldInstance.transform.position = transform.position + Vector3.down * 0.05f;
@@ -35,7 +35,7 @@ public class PlayerShield : MonoBehaviour {
         _currentTime = 0f;
     }
 
-    IEnumerator DesactivateShield() {
+    private IEnumerator DeactivateShield() {
         yield return new WaitForSeconds(ShieldDuration);
         Destroy(_shieldInstance);
         _shieldInstance = null;

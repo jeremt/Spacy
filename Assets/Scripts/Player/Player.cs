@@ -3,6 +3,10 @@
 [RequireComponent(typeof (PlayerController))]
 public class Player : MonoBehaviour {
 
+#if UNITY_EDITOR
+    public bool CreateDebug;
+#endif
+
     // Player API
     public int Index = 0;
 
@@ -33,6 +37,13 @@ public class Player : MonoBehaviour {
     public void Awake() {
         _controller = GetComponent<PlayerController>();
         _animator = GetComponent<Animator>();
+#if UNITY_EDITOR
+        if (CreateDebug) {
+            if (GameManager.Instance.GetPlayer(Index) == null) {
+                GameManager.Instance.SetPlayer(Index, Index);
+            }
+        }
+#endif
     }
 
     public void Start() {
