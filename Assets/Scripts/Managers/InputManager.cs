@@ -121,6 +121,9 @@ public class InputManager : Singleton<InputManager> {
         if (inputIndex == 0) {
             return Input.GetAxis(_keyboardAxis[alias]);
         } else {
+            if (alias == InputAlias.Vertical) {
+                return -XCI.GetAxis(_xboxAxis[alias], inputIndex);
+            }
             return XCI.GetAxis(_xboxAxis[alias], inputIndex);
         }
     }
