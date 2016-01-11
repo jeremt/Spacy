@@ -1,10 +1,11 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 [RequireComponent(typeof (PlayerController))]
 public class Player : MonoBehaviour {
 
 #if UNITY_EDITOR
-    public bool CreateDebug;
+    public bool CreateDebug = true;
 #endif
 
     // Player API
@@ -40,10 +41,8 @@ public class Player : MonoBehaviour {
         _controller = GetComponent<PlayerController>();
         _animator = GetComponent<Animator>();
 #if UNITY_EDITOR
-        if (CreateDebug) {
-            if (GameManager.Instance.GetPlayer(Index) == null) {
-                GameManager.Instance.SetPlayer(Index, Index);
-            }
+        if (CreateDebug && GameManager.Instance.GetPlayer(Index) == null) {
+            GameManager.Instance.SetPlayer(Index, Index);
         }
 #endif
     }
@@ -61,7 +60,6 @@ public class Player : MonoBehaviour {
             InputManager.Instance.GetAxis(InputAlias.Horizontal, _inputIndex),
             InputManager.Instance.GetAxis(InputAlias.Vertical, _inputIndex)
         );
-        _animator.SetBool("Running", Mathf.Abs(input.x) > 0.01);
         if (_controller.Collisions.Above || _controller.Collisions.Below) {
             _velocity.y = 0;
         }
@@ -77,18 +75,23 @@ public class Player : MonoBehaviour {
         }
         _velocity.x = Mathf.SmoothDamp(_velocity.x, input.x * MoveSpeed, ref _moveAcceleration, _controller.Collisions.Below ? AccelerationGrounded : AccelerationAirborne);
         _velocity.y += _gravity * Time.deltaTime;
-
         if ((FacingRight && _velocity.x < 0) || (!FacingRight && _velocity.x > 0)) {
-            _flipDirection();
+            FlipDirection();
         }
         _controller.Move(_velocity * Time.deltaTime);
+        UpdateAnimations();
     }
 
-    private void _flipDirection() {
-        FacingRight = !FacingRight;
+    private void UpdateAnimations() {
+        _animator.SetBool("Running", Mathf.Abs(_velocity.x) > 0.1);
+        _animator.SetInteger("Jumping", _controller.Collisions.Below ? 0 : Math.Sign(_velocity.y));
+    }
+
+    private void FlipDirection() {
         var scale = transform.localScale;
         scale.x *= -1;
         transform.localScale = scale;
+        FacingRight = !FacingRight;
     }
 
 }
