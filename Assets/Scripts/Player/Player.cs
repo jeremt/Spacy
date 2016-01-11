@@ -25,6 +25,8 @@ public class Player : MonoBehaviour {
     private PlayerController _controller;
     private Animator _animator;
 
+    // Player
+    private PlayerData _playerData;
     private int _inputIndex;
 
     // Player movement internals
@@ -47,9 +49,11 @@ public class Player : MonoBehaviour {
     }
 
     public void Start() {
-        _inputIndex = GameManager.Instance.GetPlayer(Index).InputIndex;
+        _playerData = GameManager.Instance.GetPlayer(Index);
+        _inputIndex = _playerData.InputIndex;
         _gravity = - (2 * JumpHeight) / Mathf.Pow(JumpTimeApex, 2);
         _jumpVelocity = Mathf.Abs(_gravity) * JumpTimeApex;
+        GetComponent<SpriteRenderer>().color = _playerData.SkinColor;
     }
 
     public void Update() {
