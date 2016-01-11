@@ -56,10 +56,12 @@ public class GameOver : MonoBehaviour {
         }
         if (InputManager.Instance.GetKeyUp(InputAlias.Cancel)) {
             GameManager.Instance.RemovePlayers();
+            GameManager.Instance.ResetScores();
             SceneManager.LoadScene("Menu");
         }
         if (InputManager.Instance.GetKeyUp(InputAlias.Submit)) {
             SceneManager.LoadScene("Runaway");
+            GameManager.Instance.ResetScores();
         }
 	}
 

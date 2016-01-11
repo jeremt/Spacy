@@ -102,6 +102,15 @@ public class GameManager : Singleton<GameManager> {
         }
     }
 
+    public void ResetScores() {
+        for (int i = 0; i < NumberOfPlayers; ++i) {
+            if (_players[i] != null) {
+            }
+            _players[i].NumberOfDeaths = 0;
+            _players[i].NumberOfKills = 0;
+        }
+    }
+
     public PlayerData GetPlayer(int index) {
         return _players[index];
     }
