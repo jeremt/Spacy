@@ -7,6 +7,7 @@ public class PlayerGun : MonoBehaviour {
     public float ShootInterval = 0.2f;
     public float BulletSpeed = 0.2f;
     public PlayerBullet Bullet;
+    public AudioClip ShootAudio;
 
     // Components
     private Player _player;
@@ -14,12 +15,15 @@ public class PlayerGun : MonoBehaviour {
 
     // Input internals
     private int _inputIndex;
+    private AudioSource _audioSource;
 
     // PlayerGun internals
     private bool _isShooting;
     private float _currentShootingTime;
 
+
     public void Awake() {
+        _audioSource = GetComponent<AudioSource>();
         _player = GetComponent<Player>();
         _animator = GetComponent<Animator>();
     }
@@ -50,6 +54,7 @@ public class PlayerGun : MonoBehaviour {
     }
 
     private void ShootBullet() {
+        _audioSource.PlayOneShot(ShootAudio);
         var bulletInstance = Instantiate(Bullet, transform.position, Quaternion.Euler(new Vector3(0,0,0))) as PlayerBullet;
         if (bulletInstance != null) {
             float direction = InputManager.Instance.GetAxis(InputAlias.Vertical, _inputIndex);
