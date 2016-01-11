@@ -27,18 +27,22 @@ public class PlayerBullet : MonoBehaviour {
     }
 
     void OnHitRender(Collider2D collider) {
-        if (collider.tag == "Player" && collider.GetComponent<Player>().Index != PlayerIndex) {
-            if (collider.GetComponent<PlayerShield>().Activated) {
-                collider.GetComponent<PlayerShield>().ResetRespawn();
-                Speed *= -1f;
-                PlayerIndex = collider.GetComponent<Player>().Index;
-                GetComponent<SpriteRenderer>().color = GameManager.Instance.GetPlayer(PlayerIndex).SkinColor;
+        if (collider.tag == "Player") {
+            if (collider.GetComponent<Player>().Index != PlayerIndex) {
+                if (collider.GetComponent<PlayerShield>().Activated) {
+                    collider.GetComponent<PlayerShield>().ResetRespawn();
+                    Speed *= -1f;
+                    PlayerIndex = collider.GetComponent<Player>().Index;
+                    GetComponent<SpriteRenderer>().color = GameManager.Instance.GetPlayer(PlayerIndex).SkinColor;
+                } else {
+                    Destroy(collider.gameObject);
+                    GameManager.Instance.GetPlayer(PlayerIndex).NumberOfKills += 1;
+                    GameManager.Instance.GetPlayer(collider.GetComponent<Player>().Index).NumberOfDeaths += 1;
+                    Explode();
+                    _playerSpawner.RespawnPlayer(collider.GetComponent<Player>().Index);
+                }
             } else {
-                Destroy(collider.gameObject);
-                GameManager.Instance.GetPlayer(PlayerIndex).NumberOfKills += 1;
-                GameManager.Instance.GetPlayer(collider.GetComponent<Player>().Index).NumberOfDeaths += 1;
-                Explode();
-                _playerSpawner.RespawnPlayer(collider.GetComponent<Player>().Index);
+                transform.Translate(Speed.x, Speed.y, 0);
             }
         } else if (collider.tag == "Solid") {
             Explode();
