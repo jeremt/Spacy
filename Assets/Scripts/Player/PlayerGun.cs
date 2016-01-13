@@ -54,17 +54,16 @@ public class PlayerGun : MonoBehaviour {
     }
 
     private void ShootBullet() {
-        _audioSource.PlayOneShot(ShootAudio);
+        _audioSource.PlayOneShot(ShootAudio, 0.2f);
         var bulletInstance = Instantiate(Bullet, transform.position, Quaternion.Euler(new Vector3(0,0,0))) as PlayerBullet;
         if (bulletInstance != null) {
             float direction = InputManager.Instance.GetAxis(InputAlias.Vertical, _inputIndex);
-            if (Mathf.Abs(direction) < 0.2f) {
-                bulletInstance.Speed = new Vector2(_player.FacingRight ? BulletSpeed : -BulletSpeed, 0);
-            } else if (direction < 0f) {
-                bulletInstance.Speed = new Vector2(_player.FacingRight ? BulletSpeed : -BulletSpeed, BulletSpeed);
-            } else if (direction > 0f) {
-                bulletInstance.Speed = new Vector2(_player.FacingRight ? BulletSpeed : -BulletSpeed, -BulletSpeed);
+            if (direction < -0.2f) {
+                bulletInstance.transform.Rotate(new Vector3(0, 0, _player.FacingRight ? 45 : -45));
+            } else if (direction > 0.2f) {
+                bulletInstance.transform.Rotate(new Vector3(0, 0, _player.FacingRight ? -45 : 45));
             }
+            bulletInstance.Speed = new Vector2(_player.FacingRight ? BulletSpeed : -BulletSpeed, 0);
             bulletInstance.transform.Translate((_player.FacingRight ? 0.1f : -0.1f), -0.03f, 0f);
             if (!_player.FacingRight) {
                 var scale = bulletInstance.transform.localScale;
