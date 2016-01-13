@@ -60,8 +60,8 @@ public class GameOver : MonoBehaviour {
             SceneManager.LoadScene("Menu");
         }
         if (InputManager.Instance.GetKeyUp(InputAlias.Submit)) {
-            SceneManager.LoadScene("Runaway");
             GameManager.Instance.ResetScores();
+            SceneManager.LoadScene("Runaway");
         }
 	}
 

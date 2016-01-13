@@ -2703,7 +2703,7 @@ MonoBehaviour:
   - {fileID: 1988802814}
   - {fileID: 2145945681}
   AnimationDuration: 0.5
-  DisabledTime: 3
+  DisabledTime: 1
   _isMoving: 0
 --- !u!1001 &824754748
 Prefab:
