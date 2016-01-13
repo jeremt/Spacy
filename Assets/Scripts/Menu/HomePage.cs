@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 [RequireComponent(typeof (PageTransition))]
 public class HomePage : MonoBehaviour {

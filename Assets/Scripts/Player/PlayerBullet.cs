@@ -29,11 +29,11 @@ public class PlayerBullet : MonoBehaviour {
     void OnHitRender(Collider2D collider) {
         if (collider.tag == "Player") {
             if (collider.GetComponent<Player>().Index != PlayerIndex) {
-                if (collider.GetComponent<PlayerShield>().Activated) {
-                    collider.GetComponent<PlayerShield>().ResetRespawn();
-                    Speed *= -1f;
+                if (collider.GetComponent<PlayerShield>().Active) {
+                    collider.GetComponent<PlayerShield>().AwardDeflectBonus();
                     PlayerIndex = collider.GetComponent<Player>().Index;
                     GetComponent<SpriteRenderer>().color = GameManager.Instance.GetPlayer(PlayerIndex).SkinColor;
+                    Speed *= -1f;
                 } else {
                     Destroy(collider.gameObject);
                     GameManager.Instance.GetPlayer(PlayerIndex).NumberOfKills += 1;
@@ -51,9 +51,10 @@ public class PlayerBullet : MonoBehaviour {
 
     private void Explode() {
         var explosionInstance = Instantiate(Explosion, transform.position, Quaternion.Euler(new Vector3(0,0,0))) as GameObject;
-        explosionInstance.GetComponent<ParticleSystem>().startColor = GameManager.Instance.GetPlayer(PlayerIndex).SkinColor;
+        if (explosionInstance != null) {
+            explosionInstance.GetComponent<ParticleSystem>().startColor = GameManager.Instance.GetPlayer(PlayerIndex).SkinColor;
+        }
         Destroy(gameObject);
-
     }
 
 }

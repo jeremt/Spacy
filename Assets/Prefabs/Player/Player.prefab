@@ -190,10 +190,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3fe73a83aac8456e9eedcedeb443f42, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  RespawnDuration: 1
-  ShieldDuration: 0.1
+  ShieldDuration: 0.15
+  ShieldDurationBonus: 0.5
+  ShieldLagBonus: 0.75
+  ShieldLag: 1
   Shield: {fileID: 131622, guid: 9f562dded18804f3d86294b546ce20a0, type: 2}
-  Activated: 0
+  Active: 0
 --- !u!114 &11433606
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -354,6 +356,10 @@ Prefab:
     - target: {fileID: 0}
       propertyPath: BypassEffects
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: ShieldDuration
+      value: 0.15
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
