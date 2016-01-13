@@ -8,8 +8,8 @@ public class HomePage : MonoBehaviour {
         if (GetComponent<PageTransition>().IsTransitioning()) {
             return;
         }
-        if (InputManager.Instance.GetKeyUp(InputAlias.Start)) {
-            GetComponent<PageTransition>().GoNext();
+        if (InputManager.Instance.GetKeyDown(InputAlias.Start)) {
+           GetComponent<PageTransition>().GoNext();
         }
 	}
 
