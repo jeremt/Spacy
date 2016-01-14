@@ -52,7 +52,8 @@ public class PlayerBullet : MonoBehaviour {
     private void Explode() {
         var explosionInstance = Instantiate(Explosion, transform.position, Quaternion.Euler(new Vector3(0,0,0))) as GameObject;
         if (explosionInstance != null) {
-            explosionInstance.GetComponent<ParticleSystem>().startColor = GameManager.Instance.GetPlayer(PlayerIndex).SkinColor;
+            explosionInstance.GetComponent<Explosion>().Color = GameManager.Instance.GetPlayer(PlayerIndex).SkinColor;
+//            explosionInstance.GetComponent<ParticleSystem>().startColor = GameManager.Instance.GetPlayer(PlayerIndex).SkinColor;
         }
         Destroy(gameObject);
     }
