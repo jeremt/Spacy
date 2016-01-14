@@ -21,6 +21,7 @@ public class Player : MonoBehaviour {
     public int NumberOfAirJumps = 1;
     public float JumpHeight = .35f;
     public float JumpTimeApex = .32f;
+    public float MaxFallSpeed = -3f;
 
     // Components
     private PlayerController _controller;
@@ -75,6 +76,7 @@ public class Player : MonoBehaviour {
         }
         _velocity.x = Mathf.SmoothDamp(_velocity.x, input.x * MoveSpeed, ref _moveAcceleration, _controller.Collisions.Below ? AccelerationGrounded : AccelerationAirborne);
         _velocity.y += _gravity * Time.deltaTime;
+        _velocity.y = Math.Max(_velocity.y, MaxFallSpeed);
         if ((FacingRight && _velocity.x < 0) || (!FacingRight && _velocity.x > 0)) {
             FlipDirection();
         }
