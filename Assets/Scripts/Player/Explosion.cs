@@ -3,6 +3,7 @@ using System.Collections;
 
 public class Explosion : MonoBehaviour {
 
+    public bool AutoStart = true;
     public int NumberOfParticles = 5;
     public Rigidbody2D Particle;
     public Color Color;
@@ -10,8 +11,15 @@ public class Explosion : MonoBehaviour {
 
     private Rigidbody2D[] _particles;
     private float _currentTime;
+    private bool _started = false;
 
     public void Start() {
+        if (AutoStart) {
+            Explode();
+        }
+    }
+
+    public void Explode() {
         _particles = new Rigidbody2D[NumberOfParticles];
         _currentTime = 0f;
         for (int i = 0; i < NumberOfParticles; ++i) {
@@ -23,9 +31,13 @@ public class Explosion : MonoBehaviour {
             particleInstance.GetComponent<SpriteRenderer>().color = Color;
             _particles[i] = particleInstance;
         }
+        _started = true;
     }
 
     public void Update() {
+        if (!_started) {
+            return;
+        }
         _currentTime += Time.deltaTime;
         for (int i = 0; i < NumberOfParticles; ++i) {
             _particles[i].GetComponent<SpriteRenderer>().color = new Color(Color.r, Color.g, Color.b, Mathf.Lerp(1, 0, _currentTime / Duration));

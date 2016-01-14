@@ -90,7 +90,8 @@ MonoBehaviour:
   LayerMask:
     serializedVersion: 2
     m_Bits: 768
-  Explosion: {fileID: 143816, guid: 3930a74b77d784a4b9f9e78ffffa6a3f, type: 2}
+  Explosion: {fileID: 11484918, guid: 3930a74b77d784a4b9f9e78ffffa6a3f, type: 2}
+  PlayerExplosion: {fileID: 11449448, guid: 20b733d52f9174a9984fcb5cc443f34b, type: 2}
   Speed: {x: 0.2, y: 0}
   PlayerIndex: -1
 --- !u!212 &21229604
@@ -153,7 +154,8 @@ Prefab:
     - target: {fileID: 0}
       propertyPath: Explosion
       value: 
-      objectReference: {fileID: 143816, guid: 3930a74b77d784a4b9f9e78ffffa6a3f, type: 2}
+      objectReference: {fileID: 11484918, guid: 3930a74b77d784a4b9f9e78ffffa6a3f,
+        type: 2}
     - target: {fileID: 0}
       propertyPath: PlayerSpawner
       value: 
@@ -171,6 +173,11 @@ Prefab:
       propertyPath: LayerMask.m_Bits
       value: 768
       objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: PlayerExplosion
+      value: 
+      objectReference: {fileID: 11449448, guid: 20b733d52f9174a9984fcb5cc443f34b,
+        type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 174752}

@@ -179,6 +179,7 @@ MonoBehaviour:
   NumberOfAirJumps: 1
   JumpHeight: 0.4
   JumpTimeApex: 0.32
+  MaxFallSpeed: -3
 --- !u!114 &11416486
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -361,6 +362,18 @@ Prefab:
       propertyPath: ShieldDuration
       value: 0.15
       objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: AutoStart
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: NumberOfParticles
+      value: 60
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: Particle
+      value: 
+      objectReference: {fileID: 5007012, guid: 77879e2584f774d10bb489bec9d32993, type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 135202}

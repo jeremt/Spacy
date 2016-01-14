@@ -5,7 +5,8 @@ public class PlayerBullet : MonoBehaviour {
 
     // API
     public LayerMask LayerMask;
-    public GameObject Explosion;
+    public Explosion Explosion;
+    public Explosion PlayerExplosion;
     public Vector2 Speed = Vector2.right * 0.2f;
 
     [HideInInspector] public int PlayerIndex = -1;
@@ -35,6 +36,8 @@ public class PlayerBullet : MonoBehaviour {
                     GetComponent<SpriteRenderer>().color = GameManager.Instance.GetPlayer(PlayerIndex).SkinColor;
                     Speed *= -1f;
                 } else {
+                    var explosionInstance = Instantiate(Explosion, collider.transform.position, Quaternion.Euler(new Vector3(0,0,0))) as Explosion;
+                    explosionInstance.Color = GameManager.Instance.GetPlayer(collider.GetComponent<Player>().Index).SkinColor;
                     Destroy(collider.gameObject);
                     GameManager.Instance.GetPlayer(PlayerIndex).NumberOfKills += 1;
                     GameManager.Instance.GetPlayer(collider.GetComponent<Player>().Index).NumberOfDeaths += 1;
@@ -50,11 +53,8 @@ public class PlayerBullet : MonoBehaviour {
     }
 
     private void Explode() {
-        var explosionInstance = Instantiate(Explosion, transform.position, Quaternion.Euler(new Vector3(0,0,0))) as GameObject;
-        if (explosionInstance != null) {
-            explosionInstance.GetComponent<Explosion>().Color = GameManager.Instance.GetPlayer(PlayerIndex).SkinColor;
-//            explosionInstance.GetComponent<ParticleSystem>().startColor = GameManager.Instance.GetPlayer(PlayerIndex).SkinColor;
-        }
+        var explosionInstance = Instantiate(Explosion, transform.position, Quaternion.Euler(new Vector3(0,0,0))) as Explosion;
+        explosionInstance.Color = GameManager.Instance.GetPlayer(PlayerIndex).SkinColor;
         Destroy(gameObject);
     }
 
