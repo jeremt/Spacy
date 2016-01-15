@@ -1309,6 +1309,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: da727e3d8658e4d09acfb2271cca9ecc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  CurrentLevel: {fileID: 0}
   LivesBars:
   - {fileID: 144702}
   - {fileID: 180346}
