@@ -12,11 +12,11 @@ public class ModeSelector : MonoBehaviour {
     // Components
     private Image _image;
 
-    void Awake() {
+    public void Awake() {
         _image = GetComponent<Image>();
     }
 
-    void Start() {
+    public void Start() {
         Description.text = Options[CurrentOption];
     }
 
@@ -34,5 +34,4 @@ public class ModeSelector : MonoBehaviour {
         CurrentOption = CurrentOption + 1 == Options.Length ? 0 : CurrentOption + 1;
         Description.text = Options[CurrentOption];
     }
-
 }

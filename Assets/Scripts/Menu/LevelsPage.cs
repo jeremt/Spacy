@@ -5,7 +5,7 @@ using System.Collections;
 [RequireComponent(typeof (PageTransition))]
 public class LevelsPage : MonoBehaviour {
 
-    void Update() {
+    public void Update() {
         if (GetComponent<PageTransition>().IsTransitioning()) {
             return;
         }

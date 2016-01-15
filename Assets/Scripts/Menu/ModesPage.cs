@@ -9,7 +9,7 @@ public class ModesPage : MonoBehaviour {
     private int _currentMode = 0;
     bool _axisDown = false;
 
-    void Start() {
+    public void Start() {
         for (int i = 0; i < Modes.Length; ++i) {
             if (i == _currentMode) {
                 Modes[i].Select();
@@ -19,7 +19,7 @@ public class ModesPage : MonoBehaviour {
         }
     }
 
-	void Update () {
+    public void Update () {
         if (GetComponent<PageTransition>().IsTransitioning()) {
             return;
         }
@@ -32,7 +32,7 @@ public class ModesPage : MonoBehaviour {
         }
         if (Mathf.Abs(InputManager.Instance.GetAxis(InputAlias.Vertical)) > float.Epsilon && !_axisDown) {
             _axisDown = true;
-            _selectMode(InputManager.Instance.GetAxis(InputAlias.Vertical) > 0 ? 1 : -1);
+            SelectMode(InputManager.Instance.GetAxis(InputAlias.Vertical) > 0 ? 1 : -1);
         }
         if (Mathf.Abs(InputManager.Instance.GetAxis(InputAlias.Vertical)) < float.Epsilon && _axisDown) {
             _axisDown = false;
@@ -42,7 +42,7 @@ public class ModesPage : MonoBehaviour {
         }
 	}
 
-    private void _selectMode(int direction) {
+    private void SelectMode(int direction) {
         Modes[_currentMode].Deselect();
         _currentMode += direction;
         if (_currentMode == Modes.Length) {

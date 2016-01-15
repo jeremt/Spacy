@@ -15,7 +15,7 @@ public class PageTransition : MonoBehaviour {
 
     public void GoPrevious() {
         if (PreviousPage != null) {
-            _goPage(PreviousPage, true);
+            GoPage(PreviousPage, true);
         } else {
             Debug.LogWarning("No previous page found for " + gameObject.name + ".");
         }
@@ -23,7 +23,7 @@ public class PageTransition : MonoBehaviour {
 
     public void GoNext() {
         if (NextPage != null) {
-            _goPage(NextPage, false);
+            GoPage(NextPage, false);
         } else {
             Debug.LogWarning("No next page found for " + gameObject.name + ".");
         }
@@ -32,12 +32,12 @@ public class PageTransition : MonoBehaviour {
     public bool IsTransitioning() {
         return _currentTime > 0f;
     }
-        
-	void Update() {
+
+    public void Update() {
         if (_currentTime > 0f) {
-            float progress = _applyEasing(1f - _currentTime / Duration);
-            transform.position = Vector3.Lerp(_start, _start + Vector3.up * _getOffset(), progress);
-            _targetPage.transform.position = Vector3.Lerp(_targetStart, _targetStart + Vector3.up * _getOffset(), progress);
+            float progress = ApplyEasing(1f - _currentTime / Duration);
+            transform.position = Vector3.Lerp(_start, _start + Vector3.up * GetOffset(), progress);
+            _targetPage.transform.position = Vector3.Lerp(_targetStart, _targetStart + Vector3.up * GetOffset(), progress);
             _currentTime -= Time.deltaTime;
             if (_currentTime <= 0f) {
                 gameObject.SetActive(false);
@@ -46,28 +46,26 @@ public class PageTransition : MonoBehaviour {
         }
 	}
 
-    private void _goPage(GameObject page, bool isReverse) {
+    private void GoPage(GameObject page, bool isReverse) {
         PageTransition targetTransition = page.gameObject.GetComponent<PageTransition>();
         if (targetTransition != null && targetTransition.IsTransitioning() || IsTransitioning()) {
             return;
         }
         _isReverse = isReverse;
         _targetPage = page;
-        _targetStart = _targetPage.transform.position + Vector3.down * _getOffset();
+        _targetStart = _targetPage.transform.position + Vector3.down * GetOffset();
         _targetPage.transform.position = _targetStart;
         _start = transform.position;
         _currentTime = Duration;
         _targetPage.SetActive(true);
     }
 
-    private float _getOffset() {
+    private float GetOffset() {
         return _isReverse ? (float)Screen.height : -(float)Screen.height;
     }
 
-    // CubicOut easing
-    private float _applyEasing(float t) {
+    private float ApplyEasing(float t) {
         float f = t - 1.0f;
         return f * f * f + 1.0f;
     }
-
 }

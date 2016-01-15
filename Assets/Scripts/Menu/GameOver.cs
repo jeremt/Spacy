@@ -35,10 +35,10 @@ public class GameOver : MonoBehaviour {
         }
     }
 
-	void Update () {
+    public void Update () {
         if (_currentTime > 0) {
             if (_isMoving) {
-                transform.position = Vector3.Lerp(_startPosition, _startPosition + Vector3.up * (float)Screen.height, _applyEasing(1f - _currentTime / AnimationDuration));
+                transform.position = Vector3.Lerp(_startPosition, _startPosition + Vector3.up * (float)Screen.height, ApplyEasing(1f - _currentTime / AnimationDuration));
                 _currentTime -= Time.deltaTime;
                 if (_currentTime <= 0) {
                     _currentTime = DisabledTime;
@@ -66,7 +66,7 @@ public class GameOver : MonoBehaviour {
 	}
 
     // CubicOut easing
-    private float _applyEasing(float t) {
+    private float ApplyEasing(float t) {
         float f = t - 1.0f;
         return f * f * f + 1.0f;
     }

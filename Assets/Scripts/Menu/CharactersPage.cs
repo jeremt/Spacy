@@ -5,14 +5,13 @@ using System.Collections;
 public class CharactersPage : MonoBehaviour {
 
     public PlayerSelector[] PlayerCards;
-
-	void Update() {
+	public void Update() {
         if (GetComponent<PageTransition>().IsTransitioning()) {
             return;
         }
         for (int inputIndex = 0; inputIndex < InputManager.NumberOfInputs; ++inputIndex) {
             if (InputManager.Instance.GetKeyUp(InputAlias.Cancel, inputIndex) && GameManager.Instance.IsInputAvailable(inputIndex)) {
-                _deselectAllPlayers();
+                DeselectAllPlayers();
                 GetComponent<PageTransition>().GoPrevious();
             }
             if (InputManager.Instance.GetKeyUp(InputAlias.Submit, inputIndex) &&
@@ -42,7 +41,7 @@ public class CharactersPage : MonoBehaviour {
         }
     }
 
-    private void _deselectAllPlayers() {
+    private void DeselectAllPlayers() {
         for (int inputIndex = 0; inputIndex < InputManager.NumberOfInputs; ++inputIndex) {
             PlayerCards[inputIndex].DeselectPlayer();
         }

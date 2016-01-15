@@ -9,15 +9,15 @@ public class SurvivalMode : MonoBehaviour {
 
     private int _numberOfPlayers;
 
-    void Start() {
+    public void Start() {
         _numberOfPlayers = GameManager.Instance.GetNextPlayerIndex();
         for (int playerIndex = 0; playerIndex < _numberOfPlayers; ++playerIndex) {
             LivesBars[playerIndex].SetActive(true);
-            _setLivesColor(LivesBars[playerIndex], GameManager.Instance.GetPlayer(playerIndex).SkinColor);
+            SetLivesColor(LivesBars[playerIndex], GameManager.Instance.GetPlayer(playerIndex).SkinColor);
         }
     }
 
-	void Update () {
+    public void Update () {
         int numberOfPlayersAlive = 0;
         for (int playerIndex = 0; playerIndex < _numberOfPlayers; ++playerIndex) {
             int deaths = GameManager.Instance.GetPlayer(playerIndex).NumberOfDeaths;
@@ -36,7 +36,7 @@ public class SurvivalMode : MonoBehaviour {
         }
 	}
 
-    private void _setLivesColor(GameObject lifeBar, Color color) {
+    private void SetLivesColor(GameObject lifeBar, Color color) {
         Image[] images = lifeBar.GetComponentsInChildren<Image>();
         for (int i = 0; i < images.Length; ++i) {
             if (i < (GameManager.Instance.GetMode() as SurvivalModeData).NumberOfLives) {

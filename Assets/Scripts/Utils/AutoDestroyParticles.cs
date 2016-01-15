@@ -3,7 +3,7 @@ using System.Collections;
 
 public class AutoDestroyParticles : MonoBehaviour {
 
-	void Start() {
+    public void Start() {
         Destroy(gameObject, GetComponent<ParticleSystem>().duration);
 	}
 

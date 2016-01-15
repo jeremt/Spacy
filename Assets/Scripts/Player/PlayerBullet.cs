@@ -14,11 +14,11 @@ public class PlayerBullet : MonoBehaviour {
     // Components
     private PlayerSpawner _playerSpawner;
 
-    void Awake() {
+    public void Awake() {
         _playerSpawner = GameObject.Find("Level").GetComponent<PlayerSpawner>();
     }
 
-    void Update() {
+    public void Update() {
         var hit = Physics2D.Raycast(transform.position, Speed, Speed.magnitude, LayerMask);
         if (hit) {
             OnHitRender(hit.collider);
@@ -27,7 +27,7 @@ public class PlayerBullet : MonoBehaviour {
         }
     }
 
-    void OnHitRender(Collider2D collider) {
+    public void OnHitRender(Collider2D collider) {
         if (collider.tag == "Player") {
             if (collider.GetComponent<Player>().Index != PlayerIndex) {
                 if (collider.GetComponent<PlayerShield>().Active) {
@@ -57,5 +57,4 @@ public class PlayerBullet : MonoBehaviour {
         explosionInstance.Color = GameManager.Instance.GetPlayer(PlayerIndex).SkinColor;
         Destroy(gameObject);
     }
-
 }

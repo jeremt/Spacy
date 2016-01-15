@@ -3,7 +3,7 @@
 [RequireComponent(typeof (PageTransition))]
 public class HomePage : MonoBehaviour {
 
-    void Update() {
+    public void Update() {
         if (GetComponent<PageTransition>().IsTransitioning()) {
             return;
         }

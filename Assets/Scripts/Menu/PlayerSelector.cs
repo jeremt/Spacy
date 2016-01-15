@@ -9,8 +9,8 @@ public class PlayerSelector : MonoBehaviour {
     public Text Text;
     public Image DeviceImage;
     public Sprite[] DevicesSprite;
-        	
-    void Start() {
+
+    public void Start() {
         Text.text = "P" + (Index + 1);
     }
 
