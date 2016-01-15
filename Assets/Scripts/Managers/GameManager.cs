@@ -17,10 +17,11 @@ public class PlayerData {
 
 public class ModeData {
     public int Index;
-    protected int _option;
+    protected int Option;
+
     public ModeData(int index, int option) {
         Index = index;
-        _option = option;
+        Option = option;
     }
 };
 
@@ -29,7 +30,7 @@ public class TimeModeData : ModeData {
 
     public float Duration {
         get {
-            switch (_option) {
+            switch (Option) {
                 case 0:
                     return 60f;
                 case 1:
@@ -40,8 +41,9 @@ public class TimeModeData : ModeData {
                     return 10f * 60f;
                 case 4:
                     return 15f * 60f;
+                default:
+                    return 60f;
             }
-            return 60f;
         }
     }
 }
@@ -51,15 +53,16 @@ public class SurvivalModeData : ModeData {
 
     public int NumberOfLives {
         get {
-            switch (_option) {
+            switch (Option) {
                 case 0:
                     return 1;
                 case 1:
                     return 3;
                 case 2:
                     return 5;
+                default:
+                    return 1;
             }
-            return 1;
         }
     }
 }
@@ -68,8 +71,7 @@ public class GameManager : Singleton<GameManager> {
 
     public const int NumberOfPlayers = 5;
 
-
-    private PlayerData[] _players = new PlayerData[5];
+    private PlayerData[] _players = new PlayerData[NumberOfPlayers];
     private List<Color> _colors = new List<Color> {
         new Color(0.6f, 0.4f, 0.4f, 1f),
         new Color(0.4f, 0.6f, 0.4f, 1f),
@@ -94,7 +96,7 @@ public class GameManager : Singleton<GameManager> {
     }
 
     public void RemovePlayers() {
-        for (int i = 0; i < NumberOfPlayers; ++i) {
+        for (var i = 0; i < NumberOfPlayers; ++i) {
             if (_players[i] != null) {
                 _colors.Add(_players[i].SkinColor);
                 _players[i] = null;
@@ -103,7 +105,7 @@ public class GameManager : Singleton<GameManager> {
     }
 
     public void ResetScores() {
-        for (int i = 0; i < NumberOfPlayers; ++i) {
+        for (var i = 0; i < NumberOfPlayers; ++i) {
             if (_players[i] != null) {
                 _players[i].NumberOfDeaths = 0;
                 _players[i].NumberOfKills = 0;
@@ -126,7 +128,7 @@ public class GameManager : Singleton<GameManager> {
     }
 
     public int GetNextPlayerIndex() {
-        for (int i = 0; i < NumberOfPlayers; ++i) {
+        for (var i = 0; i < NumberOfPlayers; ++i) {
             if (_players[i] == null) {
                 return i;
             }
@@ -135,7 +137,7 @@ public class GameManager : Singleton<GameManager> {
     }
 
     public bool IsInputAvailable(int inputIndex) {
-        for (int i = 0; i < NumberOfPlayers; ++i) {
+        for (var i = 0; i < NumberOfPlayers; ++i) {
             if (_players[i] != null && _players[i].InputIndex == inputIndex) {
                 return false;
             }
@@ -151,6 +153,8 @@ public class GameManager : Singleton<GameManager> {
             case 1:
                 _mode = new SurvivalModeData(option);
                 break;
+            default:
+                throw new System.InvalidOperationException("Mode does not exist");
         };
     }
 

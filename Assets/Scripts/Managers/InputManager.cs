@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 using System.Collections.Generic;
 using XboxCtrlrInput;
 
@@ -57,7 +56,7 @@ public class InputManager : Singleton<InputManager> {
     protected InputManager() {}
 
     public bool GetKeyUp(InputAlias alias) {
-        for (int i = 0; i < NumberOfInputs; ++i) {
+        for (var i = 0; i < NumberOfInputs; ++i) {
             if (GetKeyUp(alias, i)) {
                 return true;
             }
@@ -66,15 +65,11 @@ public class InputManager : Singleton<InputManager> {
     }
 
     public bool GetKeyUp(InputAlias alias, int inputIndex) {
-        if (inputIndex == 0) {
-            return Input.GetKeyUp(_keyboardButtons[alias]);
-        } else {
-            return XCI.GetButtonUp(_xboxButtons[alias], inputIndex);
-        }
+        return inputIndex == 0 ? Input.GetKeyUp(_keyboardButtons[alias]) : XCI.GetButtonUp(_xboxButtons[alias], inputIndex);
     }
 
     public bool GetKeyDown(InputAlias alias) {
-        for (int i = 0; i < NumberOfInputs; ++i) {
+        for (var i = 0; i < NumberOfInputs; ++i) {
             if (GetKeyDown(alias, i)) {
                 return true;
             }
@@ -83,15 +78,11 @@ public class InputManager : Singleton<InputManager> {
     }
 
     public bool GetKeyDown(InputAlias alias, int inputIndex) {
-        if (inputIndex == 0) {
-            return Input.GetKeyDown(_keyboardButtons[alias]);
-        } else {
-            return XCI.GetButtonDown(_xboxButtons[alias], inputIndex);
-        }
+        return inputIndex == 0 ? Input.GetKeyDown(_keyboardButtons[alias]) : XCI.GetButtonDown(_xboxButtons[alias], inputIndex);
     }
 
     public bool GetKey(InputAlias alias) {
-        for (int i = 0; i < NumberOfInputs; ++i) {
+        for (var i = 0; i < NumberOfInputs; ++i) {
             if (GetKey(alias, i)) {
                 return true;
             }
@@ -100,16 +91,12 @@ public class InputManager : Singleton<InputManager> {
     }
 
     public bool GetKey(InputAlias alias, int inputIndex) {
-        if (inputIndex == 0) {
-            return Input.GetKey(_keyboardButtons[alias]);
-        } else {
-            return XCI.GetButton(_xboxButtons[alias], inputIndex);
-        }
+        return inputIndex == 0 ? Input.GetKey(_keyboardButtons[alias]) : XCI.GetButton(_xboxButtons[alias], inputIndex);
     }
 
     public float GetAxis(InputAlias alias) {
-        float max = 0;
-        for (int i = 0; i < NumberOfInputs; ++i) {
+        var max = 0.0f;
+        for (var i = 0; i < NumberOfInputs; ++i) {
             if (Mathf.Abs(GetAxis(alias, i)) > Mathf.Abs(max)) {
                 max = GetAxis(alias, i);
             }
@@ -120,12 +107,11 @@ public class InputManager : Singleton<InputManager> {
     public float GetAxis(InputAlias alias, int inputIndex) {
         if (inputIndex == 0) {
             return Input.GetAxis(_keyboardAxis[alias]);
-        } else {
-            if (alias == InputAlias.Vertical) {
-                return -XCI.GetAxis(_xboxAxis[alias], inputIndex);
-            }
-            return XCI.GetAxis(_xboxAxis[alias], inputIndex);
         }
+        if (alias == InputAlias.Vertical) {
+            return -XCI.GetAxis(_xboxAxis[alias], inputIndex);
+        }
+        return XCI.GetAxis(_xboxAxis[alias], inputIndex);
     }
 
 }
