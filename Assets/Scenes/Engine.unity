@@ -880,6 +880,10 @@ Prefab:
       propertyPath: Index
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 6111930, guid: e0548659e06b5c343b2b23290671314b, type: 2}
+      propertyPath: m_Size.y
+      value: 0.14
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: e0548659e06b5c343b2b23290671314b, type: 2}
   m_IsPrefabParent: 0
@@ -934,6 +938,22 @@ Prefab:
       propertyPath: CreateDebug
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 6111930, guid: e0548659e06b5c343b2b23290671314b, type: 2}
+      propertyPath: m_IsTrigger
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6111930, guid: e0548659e06b5c343b2b23290671314b, type: 2}
+      propertyPath: m_Offset.y
+      value: -0.03
+      objectReference: {fileID: 0}
+    - target: {fileID: 6111930, guid: e0548659e06b5c343b2b23290671314b, type: 2}
+      propertyPath: m_Size.y
+      value: 0.14
+      objectReference: {fileID: 0}
+    - target: {fileID: 11403404, guid: e0548659e06b5c343b2b23290671314b, type: 2}
+      propertyPath: CrouchingSize.y
+      value: 0.06
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: e0548659e06b5c343b2b23290671314b, type: 2}
   m_IsPrefabParent: 0
@@ -978,7 +998,7 @@ Transform:
   - {fileID: 1251718954}
   - {fileID: 1611394104}
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 2
 --- !u!4 &1430727350 stripped
 Transform:
   m_PrefabParentObject: {fileID: 459414, guid: bc51796ec1d5d43a4b0ecea85254943c, type: 2}

@@ -1,7 +1,20 @@
 ﻿using System;
 using UnityEngine;
 
-[RequireComponent(typeof (PlayerController))]
+public struct PlayerStateInfos {
+
+    public bool Grounded, Running, Jumping, Falling, Crouching;
+
+    public void Reset() { Grounded = Running = Jumping = Falling = Crouching = false; }
+
+    public override string ToString() {
+        return String.Format(
+            "Grounded: {0}, Running: {1}, Jumping: {2}, Falling: {3}, Crouching: {4}",
+            Grounded, Running, Jumping, Falling, Crouching);
+    }
+}
+
+[RequireComponent(typeof (PlayerController), typeof(BoxCollider2D), typeof(Animator))]
 public class Player : MonoBehaviour {
 
 #if UNITY_EDITOR
@@ -23,8 +36,18 @@ public class Player : MonoBehaviour {
     public float JumpTimeApex = .32f;
     public float MaxFallSpeed = -3f;
 
+    // Player collider size and offset
+    public Vector2 StandingSize = new Vector2(0.07f, 0.14f);
+    public Vector2 CrouchingSize = new Vector2(0.07f, 0.06f);
+    public Vector2 StandingOffset = new Vector2(0.015f, -0.03f);
+    public Vector2 CrouchingOffset = new Vector2(0.015f, -0.07f);
+
+    [HideInInspector]
+    public PlayerStateInfos PlayerState;
+
     // Components
     private PlayerController _controller;
+    private BoxCollider2D _collider;
     private Animator _animator;
 
     // Player
@@ -40,6 +63,7 @@ public class Player : MonoBehaviour {
 
     public void Awake() {
         _controller = GetComponent<PlayerController>();
+        _collider = GetComponent<BoxCollider2D>();
         _animator = GetComponent<Animator>();
 #if UNITY_EDITOR
         if (CreateDebug && GameManager.Instance.GetPlayer(Index) == null) {
@@ -57,16 +81,27 @@ public class Player : MonoBehaviour {
     }
 
     public void Update() {
+        // Horizontal and Vertical input
         var input = new Vector2(
             InputManager.Instance.GetAxis(InputAlias.Horizontal, _inputIndex),
             InputManager.Instance.GetAxis(InputAlias.Vertical, _inputIndex)
         );
+        // Crouching
+        if (_controller.Collisions.Below && InputManager.Instance.GetKey(InputAlias.Crouch, _inputIndex)) { // Crouching
+            input.x = 0;
+            PlayerState.Crouching = true;
+        }
+        _collider.size = !PlayerState.Crouching ? StandingSize : CrouchingSize;
+        _collider.offset = !PlayerState.Crouching ? StandingOffset : CrouchingOffset;
+        // Reset Y velocity when touching ground or ceiling
         if (_controller.Collisions.Above || _controller.Collisions.Below) {
             _velocity.y = 0;
         }
+        // Jump
         if (InputManager.Instance.GetKeyDown(InputAlias.Jump, _inputIndex) && _controller.Collisions.Below) {
             _velocity.y = _jumpVelocity;
         }
+        // Air Jump
         if (InputManager.Instance.GetKeyDown(InputAlias.Jump, _inputIndex) && !_controller.Collisions.Below && _jumps < NumberOfAirJumps) {
             _velocity.y = _jumpVelocity;
             _jumps += 1;
@@ -74,19 +109,32 @@ public class Player : MonoBehaviour {
         if (_controller.Collisions.Below) {
             _jumps = 0;
         }
+        // Run
         _velocity.x = Mathf.SmoothDamp(_velocity.x, input.x * MoveSpeed, ref _moveAcceleration, _controller.Collisions.Below ? AccelerationGrounded : AccelerationAirborne);
+        // Gravity and max fall speed
         _velocity.y += _gravity * Time.deltaTime;
         _velocity.y = Math.Max(_velocity.y, MaxFallSpeed);
+        // Direction
         if ((FacingRight && _velocity.x < 0) || (!FacingRight && _velocity.x > 0)) {
             FlipDirection();
         }
+        // Collisions
         _controller.Move(_velocity * Time.deltaTime);
-        UpdateAnimations();
+        // Player state and animations
+        UpdateState();
     }
 
-    private void UpdateAnimations() {
-        _animator.SetBool("Running", Mathf.Abs(_velocity.x) > 0.1);
-        _animator.SetInteger("Jumping", _controller.Collisions.Below ? 0 : Math.Sign(_velocity.y));
+    private void UpdateState() {
+        PlayerState.Reset();
+        // Player state
+        PlayerState.Grounded = _controller.Collisions.Below;
+        PlayerState.Running = Mathf.Abs(_velocity.x) > 0.1;
+        PlayerState.Jumping = !_controller.Collisions.Below && Math.Sign(_velocity.y) > 0;
+        PlayerState.Falling = !_controller.Collisions.Below && Math.Sign(_velocity.y) < 0;
+        // Animations
+        _animator.SetBool("Running", PlayerState.Running);
+        _animator.SetInteger("Jumping", PlayerState.Grounded ? 0 : (PlayerState.Jumping ? 1 : -1));
+        _animator.SetBool("Crouching", PlayerState.Crouching);
     }
 
     private void FlipDirection() {
@@ -95,5 +143,4 @@ public class Player : MonoBehaviour {
         transform.localScale = scale;
         FacingRight = !FacingRight;
     }
-
 }

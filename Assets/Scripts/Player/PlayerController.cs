@@ -1,13 +1,19 @@
 ﻿using System;
 using UnityEngine;
 
-public struct RaycastOriginInfos
-{
+public struct RaycastOriginInfos {
+
     public Vector2 TopLeft, TopRight;
     public Vector2 BottomLeft, BottomRight;
+
+    public override string ToString() {
+        return String.Format(
+            "TopLeft: {0}, TopRight: {1}, BottomLeft: {2}, BottomRight: {3}",
+            TopLeft, TopRight, BottomLeft, BottomRight);
+    }
 }
-public struct CollisionInfos
-{
+public struct CollisionInfos {
+
     public bool Above, Below;
     public bool Left, Right;
     public bool BelowPlatform;
@@ -23,6 +29,7 @@ public struct CollisionInfos
 
 [RequireComponent(typeof (BoxCollider2D))]
 public class PlayerController : MonoBehaviour {
+
     private const float SkinWidth = .015f;
 
     // Controller API
