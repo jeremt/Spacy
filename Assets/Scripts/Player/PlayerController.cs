@@ -114,6 +114,9 @@ public class PlayerController : MonoBehaviour {
                     Collisions.Above = directionY == 1;
                 }
             }
+
+
+
             // Debug.DrawRay(rayOrigin, Vector2.up * directionY * rayLength, Color.red);
         }
     }

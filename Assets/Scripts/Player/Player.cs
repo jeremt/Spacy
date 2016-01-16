@@ -86,16 +86,15 @@ public class Player : MonoBehaviour {
             InputManager.Instance.GetAxis(InputAlias.Horizontal, _inputIndex),
             InputManager.Instance.GetAxis(InputAlias.Vertical, _inputIndex)
         );
-        // Crouching
-        if (_controller.Collisions.Below && InputManager.Instance.GetKey(InputAlias.Crouch, _inputIndex)) { // Crouching
-            input.x = 0;
-            PlayerState.Crouching = true;
-        }
-        _collider.size = !PlayerState.Crouching ? StandingSize : CrouchingSize;
-        _collider.offset = !PlayerState.Crouching ? StandingOffset : CrouchingOffset;
-        // Reset Y velocity when touching ground or ceiling
+        // Gravity and max fall speed
         if (_controller.Collisions.Above || _controller.Collisions.Below) {
             _velocity.y = 0;
+        }
+        _velocity.y += _gravity * Time.deltaTime;
+        _velocity.y = Math.Max(_velocity.y, MaxFallSpeed);
+        // Direction
+        if ((FacingRight && _velocity.x < 0) || (!FacingRight && _velocity.x > 0)) {
+            FlipDirection();
         }
         // Jump
         if (InputManager.Instance.GetKeyDown(InputAlias.Jump, _inputIndex) && _controller.Collisions.Below) {
@@ -109,15 +108,20 @@ public class Player : MonoBehaviour {
         if (_controller.Collisions.Below) {
             _jumps = 0;
         }
-        // Run
-        _velocity.x = Mathf.SmoothDamp(_velocity.x, input.x * MoveSpeed, ref _moveAcceleration, _controller.Collisions.Below ? AccelerationGrounded : AccelerationAirborne);
-        // Gravity and max fall speed
-        _velocity.y += _gravity * Time.deltaTime;
-        _velocity.y = Math.Max(_velocity.y, MaxFallSpeed);
-        // Direction
-        if ((FacingRight && _velocity.x < 0) || (!FacingRight && _velocity.x > 0)) {
-            FlipDirection();
+        // Crouching
+        if (_controller.Collisions.Below && InputManager.Instance.GetKey(InputAlias.Crouch, _inputIndex)) {
+            input.x = 0;
+            PlayerState.Crouching = true;
         }
+        _collider.size = !PlayerState.Crouching ? StandingSize : CrouchingSize;
+        _collider.offset = !PlayerState.Crouching ? StandingOffset : CrouchingOffset;
+        // Jumpthru
+        if (_controller.Collisions.BelowPlatform && InputManager.Instance.GetKey(InputAlias.Crouch, _inputIndex) && InputManager.Instance.GetKeyDown(InputAlias.Jump, _inputIndex)) {
+            // TODO: Jumpthru
+            _velocity.y = 0;
+        }
+        // Run / Acceleration / Deceleration
+        _velocity.x = Mathf.SmoothDamp(_velocity.x, input.x * MoveSpeed, ref _moveAcceleration, _controller.Collisions.Below ? AccelerationGrounded : AccelerationAirborne);
         // Collisions
         _controller.Move(_velocity * Time.deltaTime);
         // Player state and animations
