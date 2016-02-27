@@ -1,10 +1,24 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+interface Gun {
+    float Interval();
+    void Shoot(PlayerBullet Bullet);
+};
+
+class BasicGun : Gun {
+    public float Interval() {
+        return 0.5f;
+    }
+
+    public void Shoot(PlayerBullet Bullet) {
+    }
+};
+
 public class PlayerGun : MonoBehaviour {
 
     // PlayerGun API
-    public float ShootInterval = 0.2f;
+    public float ShootInterval = 0.5f;
     public float BulletSpeed = 0.2f;
     public PlayerBullet Bullet;
     public AudioClip ShootAudio;
@@ -19,13 +33,18 @@ public class PlayerGun : MonoBehaviour {
 
     // PlayerGun internals
     private bool _isShooting;
+    private bool _shouldShoot;
     private float _currentShootingTime;
-
+    private Gun _gun;
 
     public void Awake() {
+        _gun = new BasicGun();
         _audioSource = GetComponent<AudioSource>();
         _player = GetComponent<Player>();
         _animator = GetComponent<Animator>();
+        _currentShootingTime = _gun.Interval();
+        _shouldShoot = false;
+        _isShooting = false;
     }
 
     public void Start() {
@@ -33,23 +52,22 @@ public class PlayerGun : MonoBehaviour {
     }
 	
     public void Update() {
-        _isShooting = InputManager.Instance.GetKey(InputAlias.Shoot, _inputIndex);
-        if (InputManager.Instance.GetKeyDown(InputAlias.Shoot, _inputIndex)) {
-            _currentShootingTime = 0f;
+        if (InputManager.Instance.GetKeyDown(InputAlias.Shoot, _inputIndex) && !_isShooting) {
             _isShooting = true;
-//            _animator.Play(_animator.GetBool("Running") ? "PlayRunShoot" : "PlayerIdleShoot");
-            ShootBullet();
-        }// else if (InputManager.Instance.GetKeyUp(InputAlias.Shoot, InputIndex)) {
-//            _isShooting = false;
-        //}
-//        if (_isShooting) {
-//            if (_currentShootingTime > ShootInterval) {
-//                _currentShootingTime = 0f;
-//                _shootBullet();
-//            } else {
-//                _currentShootingTime += Time.deltaTime;
-//            }
-//        }
+            _currentShootingTime = _gun.Interval();
+        }
+        if (_isShooting) {
+            if (_currentShootingTime > _gun.Interval()) {
+                _currentShootingTime = 0f;
+                if (!InputManager.Instance.GetKey(InputAlias.Shoot, _inputIndex)) {
+                    _isShooting = false;
+                } else {
+                    ShootBullet();
+                }
+            } else {
+                _currentShootingTime += Time.deltaTime;
+            }
+        }
 
     }
 
