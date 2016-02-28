@@ -2,11 +2,13 @@
 using System.Collections;
 using System.Collections.Generic;
 
-abstract class Gun { // TODO add ammo system for guns
-    public PlayerGun playerGun;
+abstract class Gun {
+    public PlayerGun PlayerGun;
+    public int NbBullets = 0;
     abstract public float Interval();
     abstract public void Shoot();
     abstract public void Update();
+    abstract public void IncreaseBullets();
 };
 
 class BasicGun : Gun {
@@ -15,10 +17,14 @@ class BasicGun : Gun {
     }
 
     public override void Shoot() {
-        playerGun.ShootBullet();
+        PlayerGun.ShootBullet();
     }
 
     public override void Update() {
+    }
+
+    public override void IncreaseBullets() {
+        NbBullets = -1;
     }
 };
 
@@ -31,8 +37,11 @@ class Rifle : Gun {
     }
 
     public override void Shoot() {
-        _currentTime = 0f;
-        _numberOfShots = 3;
+        if (NbBullets > 0) {
+            _currentTime = 0f;
+            _numberOfShots = 3;
+            NbBullets--;
+        }
     }
 
     public override void Update() {
@@ -43,8 +52,12 @@ class Rifle : Gun {
         if (_currentTime > 0.1f) {
             _currentTime = 0f;
             _numberOfShots--;
-            playerGun.ShootBullet();
+            PlayerGun.ShootBullet();
         }
+    }
+
+    public override void IncreaseBullets() {
+        NbBullets += 10;
     }
 };
 
@@ -54,12 +67,19 @@ class ShotGun : Gun {
     }
 
     public override void Shoot() {
-        playerGun.ShootBullet(4f);
-        playerGun.ShootBullet();
-        playerGun.ShootBullet(-4f);
+        if (NbBullets > 0) {
+            PlayerGun.ShootBullet(4f);
+            PlayerGun.ShootBullet();
+            PlayerGun.ShootBullet(-4f);
+            NbBullets--;
+        }
     }
 
     public override void Update() {
+    }
+
+    public override void IncreaseBullets() {
+        NbBullets += 5;
     }
 };
 
@@ -88,12 +108,18 @@ public class PlayerGun : MonoBehaviour {
 
     // PlayerGun internals
     private bool _isShooting;
-    private bool _shouldShoot;
     private float _currentShootingTime;
     private IDictionary<GunType, Gun> _guns = new Dictionary<GunType, Gun>();
     private int _gunIndex = 0;
 
-    private Gun currentGun { get { return _guns[(GunType)_gunIndex]; } }
+    private Gun currentGun {
+        get {
+            while (_guns[(GunType)_gunIndex].NbBullets == 0) {
+                NextGun();
+            }
+            return _guns[(GunType)_gunIndex];
+        }
+    }
 
     public void Awake() {
         AddGun(0);
@@ -101,7 +127,6 @@ public class PlayerGun : MonoBehaviour {
         _player = GetComponent<Player>();
         _animator = GetComponent<Animator>();
         _currentShootingTime = currentGun.Interval();
-        _shouldShoot = false;
         _isShooting = false;
     }
 
@@ -132,22 +157,25 @@ public class PlayerGun : MonoBehaviour {
         currentGun.Update();
     }
 
-    private void NextGun() { // TODO skip guns with no ammo
+    private void NextGun() {
         _gunIndex++;
         if (_gunIndex == _guns.Count) {
             _gunIndex = 0;
         }
     }
 
-    public void AddGun(GunType type) { // TODO if gun already there increase ammo
-        if (type == GunType.BasicGun) {
-            _guns[type] = new BasicGun();
-        } else if (type == GunType.ShotGun) {
-            _guns[type] = new ShotGun();
-        } else {
-            _guns[type] = new Rifle();
+    public void AddGun(GunType type) {
+        if (!_guns.ContainsKey(type)) {
+            if (type == GunType.BasicGun) {
+                _guns[type] = new BasicGun();
+            } else if (type == GunType.ShotGun) {
+                _guns[type] = new ShotGun();
+            } else {
+                _guns[type] = new Rifle();
+            }
         }
-        _guns[type].playerGun = this;
+        _guns[type].IncreaseBullets();
+        _guns[type].PlayerGun = this;
     }
 
     public void ShootBullet(float angleOffset = 0f) {

@@ -15,10 +15,12 @@ public class DropWeapon : MonoBehaviour {
 
     void OnTriggerEnter2D(Collider2D collider) {
         if (collider.tag == "Player") {
-            collider.GetComponent<PlayerGun>().AddGun((GunType)Random.Range(1, 3));
+            if (Random.Range(0, 2) == 0) {
+                collider.GetComponent<PlayerGun>().AddGun(GunType.ShotGun);
+            } else {
+                collider.GetComponent<PlayerGun>().AddGun(GunType.Rifle);
+            }
             Destroy(gameObject);
-        } else if (collider.tag == "Bullet") {
-            // TODO
         }
     }
 }
