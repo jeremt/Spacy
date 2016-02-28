@@ -1,17 +1,64 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-interface Gun {
-    float Interval();
-    void Shoot(PlayerBullet Bullet);
+abstract class Gun {
+    public PlayerGun playerGun;
+    abstract public float Interval();
+    abstract public void Shoot();
+    abstract public void Update();
 };
 
 class BasicGun : Gun {
-    public float Interval() {
-        return 0.5f;
+    public override float Interval() {
+        return 0.4f;
     }
 
-    public void Shoot(PlayerBullet Bullet) {
+    public override void Shoot() {
+        playerGun.ShootBullet();
+    }
+
+    public override void Update() {
+    }
+};
+
+class Rifle : Gun {
+    float _currentTime = 0f;
+    int _numberOfShots = 0;
+
+    public override float Interval() {
+        return 0.6f;
+    }
+
+    public override void Shoot() {
+        _currentTime = 0f;
+        _numberOfShots = 3;
+    }
+
+    public override void Update() {
+        if (_numberOfShots == 0) {
+            return;
+        }
+        _currentTime += Time.deltaTime;
+        if (_currentTime > 0.1f) {
+            _currentTime = 0f;
+            _numberOfShots--;
+            playerGun.ShootBullet();
+        }
+    }
+};
+
+class ShotGun : Gun {
+    public override float Interval() {
+        return 0.6f;
+    }
+
+    public override void Shoot() {
+        playerGun.ShootBullet(4f);
+        playerGun.ShootBullet();
+        playerGun.ShootBullet(-4f);
+    }
+
+    public override void Update() {
     }
 };
 
@@ -38,7 +85,15 @@ public class PlayerGun : MonoBehaviour {
     private Gun _gun;
 
     public void Awake() {
-        _gun = new BasicGun();
+        int n = Random.Range(0, 3);
+        if (n == 0) {
+            _gun = new Rifle();
+        } else if (n == 1) {
+            _gun = new ShotGun();
+        } else {
+            _gun = new BasicGun();
+        }
+        _gun.playerGun = this;
         _audioSource = GetComponent<AudioSource>();
         _player = GetComponent<Player>();
         _animator = GetComponent<Animator>();
@@ -62,16 +117,16 @@ public class PlayerGun : MonoBehaviour {
                 if (!InputManager.Instance.GetKey(InputAlias.Shoot, _inputIndex)) {
                     _isShooting = false;
                 } else {
-                    ShootBullet();
+                    _gun.Shoot();
                 }
             } else {
                 _currentShootingTime += Time.deltaTime;
             }
         }
-
+        _gun.Update();
     }
 
-    private void ShootBullet() {
+    public void ShootBullet(float angleOffset = 0f) {
         _audioSource.PlayOneShot(ShootAudio, 0.2f);
         var bulletInstance = Instantiate(Bullet, transform.position, Quaternion.Euler(new Vector3(0,0,0))) as PlayerBullet;
         if (bulletInstance != null) {
@@ -81,6 +136,7 @@ public class PlayerGun : MonoBehaviour {
             } else if (direction > 0.2f) {
                 bulletInstance.transform.Rotate(new Vector3(0, 0, _player.FacingRight ? -45 : 45));
             }
+            bulletInstance.transform.Rotate(new Vector3(0, 0, angleOffset));
             bulletInstance.Speed = new Vector2(_player.FacingRight ? BulletSpeed : -BulletSpeed, 0);
             bulletInstance.transform.Translate((_player.FacingRight ? 0.1f : -0.1f), -0.03f, 0f);
             if (!_player.FacingRight) {
