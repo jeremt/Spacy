@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
-abstract class Gun {
+abstract class Gun { // TODO add ammo system for guns
     public PlayerGun playerGun;
     abstract public float Interval();
     abstract public void Shoot();
@@ -62,6 +63,13 @@ class ShotGun : Gun {
     }
 };
 
+public enum GunType {
+    BasicGun,
+    ShotGun,
+    Rifle,
+    Grenade
+};
+
 public class PlayerGun : MonoBehaviour {
 
     // PlayerGun API
@@ -82,22 +90,17 @@ public class PlayerGun : MonoBehaviour {
     private bool _isShooting;
     private bool _shouldShoot;
     private float _currentShootingTime;
-    private Gun _gun;
+    private IDictionary<GunType, Gun> _guns = new Dictionary<GunType, Gun>();
+    private int _gunIndex = 0;
+
+    private Gun currentGun { get { return _guns[(GunType)_gunIndex]; } }
 
     public void Awake() {
-        int n = Random.Range(0, 3);
-        if (n == 0) {
-            _gun = new Rifle();
-        } else if (n == 1) {
-            _gun = new ShotGun();
-        } else {
-            _gun = new BasicGun();
-        }
-        _gun.playerGun = this;
+        AddGun(0);
         _audioSource = GetComponent<AudioSource>();
         _player = GetComponent<Player>();
         _animator = GetComponent<Animator>();
-        _currentShootingTime = _gun.Interval();
+        _currentShootingTime = currentGun.Interval();
         _shouldShoot = false;
         _isShooting = false;
     }
@@ -109,21 +112,42 @@ public class PlayerGun : MonoBehaviour {
     public void Update() {
         if (InputManager.Instance.GetKeyDown(InputAlias.Shoot, _inputIndex) && !_isShooting) {
             _isShooting = true;
-            _currentShootingTime = _gun.Interval();
+            _currentShootingTime = currentGun.Interval();
+        }
+        if (InputManager.Instance.GetKeyDown(InputAlias.Crouch, _inputIndex)) {
+            NextGun();
         }
         if (_isShooting) {
-            if (_currentShootingTime > _gun.Interval()) {
+            if (_currentShootingTime > currentGun.Interval()) {
                 _currentShootingTime = 0f;
                 if (!InputManager.Instance.GetKey(InputAlias.Shoot, _inputIndex)) {
                     _isShooting = false;
                 } else {
-                    _gun.Shoot();
+                    currentGun.Shoot();
                 }
             } else {
                 _currentShootingTime += Time.deltaTime;
             }
         }
-        _gun.Update();
+        currentGun.Update();
+    }
+
+    private void NextGun() { // TODO skip guns with no ammo
+        _gunIndex++;
+        if (_gunIndex == _guns.Count) {
+            _gunIndex = 0;
+        }
+    }
+
+    public void AddGun(GunType type) { // TODO if gun already there increase ammo
+        if (type == GunType.BasicGun) {
+            _guns[type] = new BasicGun();
+        } else if (type == GunType.ShotGun) {
+            _guns[type] = new ShotGun();
+        } else {
+            _guns[type] = new Rifle();
+        }
+        _guns[type].playerGun = this;
     }
 
     public void ShootBullet(float angleOffset = 0f) {

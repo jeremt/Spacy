@@ -29,7 +29,7 @@ public class InputManager : Singleton<InputManager> {
         { InputAlias.Jump, KeyCode.LeftShift },
         { InputAlias.Shoot, KeyCode.Space },
         { InputAlias.Shield, KeyCode.X },
-        { InputAlias.Crouch, KeyCode.V }
+        { InputAlias.Crouch, KeyCode.C }
     };
 
     private Dictionary<InputAlias, string> _keyboardAxis = new Dictionary<InputAlias, string>() {
