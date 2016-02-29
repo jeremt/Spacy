@@ -180,6 +180,10 @@ MonoBehaviour:
   JumpHeight: 0.4
   JumpTimeApex: 0.32
   MaxFallSpeed: -3
+  StandingSize: {x: 0.07, y: 0.14}
+  CrouchingSize: {x: 0.07, y: 0.06}
+  StandingOffset: {x: 0.015, y: -0.03}
+  CrouchingOffset: {x: 0.015, y: -0.07}
 --- !u!114 &11416486
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -191,10 +195,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3fe73a83aac8456e9eedcedeb443f42, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ShieldDuration: 0.15
+  ShieldDuration: 0.3
   ShieldDurationBonus: 0.5
   ShieldLagBonus: 0.75
-  ShieldLag: 1
+  ShieldLag: 0.5
   Shield: {fileID: 131622, guid: 9f562dded18804f3d86294b546ce20a0, type: 2}
   Active: 0
 --- !u!114 &11433606

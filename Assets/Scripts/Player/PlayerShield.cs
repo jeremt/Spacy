@@ -9,7 +9,7 @@ public class PlayerShield : MonoBehaviour {
     public float ShieldLag = 1f;
     public GameObject Shield;
 
-    [HideInInspector] public bool Active = false;
+    [HideInInspector] public bool Active;
 
     private int _inputIndex;
     private float _shieldDuration;
