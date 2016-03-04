@@ -42,7 +42,7 @@ public class PlayerBullet : MonoBehaviour {
                     GameManager.Instance.GetPlayer(PlayerIndex).NumberOfKills += 1;
                     GameManager.Instance.GetPlayer(collider.GetComponent<Player>().Index).NumberOfDeaths += 1;
                     Explode();
-                    _playerSpawner.RespawnPlayer(collider.GetComponent<Player>().Index);
+                    _playerSpawner.RespawnPlayer(collider.GetComponent<Player>().Index); // TODO: handle this in game mode!
                 }
             } else {
                 transform.Translate(Speed.x, Speed.y, 0);
