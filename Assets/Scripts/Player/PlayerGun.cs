@@ -114,7 +114,7 @@ public class PlayerGun : MonoBehaviour {
 
     private Gun currentGun {
         get {
-            while (_guns[(GunType)_gunIndex].NbBullets == 0) {
+            while (!_guns.ContainsKey((GunType)_gunIndex) || _guns[(GunType)_gunIndex].NbBullets == 0) {
                 NextGun();
             }
             return _guns[(GunType)_gunIndex];
@@ -122,7 +122,7 @@ public class PlayerGun : MonoBehaviour {
     }
 
     public void Awake() {
-        AddGun(0);
+        AddGun(GunType.BasicGun);
         _audioSource = GetComponent<AudioSource>();
         _player = GetComponent<Player>();
         _animator = GetComponent<Animator>();
